@@ -4,20 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🤔 What is Multiplication? - Nia's Multiplication Adventure!</title>
-    <link rel="stylesheet" href="../css/style.css"> <!-- Note the path change ../ -->
+    <link rel="stylesheet" href="../css/style.css">
     <!-- Add Favicon Link -->
     <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="90" font-size="90">✨</text></svg>'>
 </head>
 <body>
     <header>
         <h1>✨ Nia's Multiplication Adventure! ✨</h1>
-        <!-- Add Score/Reward Display -->
+        <!-- Score display in header -->
         <div style="text-align: center; color: white; font-size: 1.2em; margin-bottom: 10px;">
             Score: <span id="current-score">0</span> 🏆 | <span id="reward-message"></span>
         </div>
         <nav>
-            <ul>
-                <li><a href="../index.html">🏠 Home</a></li> <!-- Note the path change ../ -->
+             <ul>
+                <li><a href="../index.html">🏠 Home</a></li>
                 <li><a href="introduction.html">🤔 What is Multiplication?</a></li>
                 <li><a href="facts.html">🔢 Multiplication Facts</a></li>
                 <li><a href="properties.html">🪄 Magic Rules (Properties)</a></li>
@@ -31,60 +31,53 @@
     </header>
 
     <main id="content">
-        <h2>🤔 What is Multiplication? (It's Fast Adding!) 🤔</h2>
-
-        <p>Imagine Aadya and Anvi buying beads. Each packet has <strong>20</strong> beads.</p>
-        <p>If they buy <strong>6</strong> packets, how many beads will they get?</p>
-
-        <div class="example">
-            <p>We can add the beads from each packet:</p>
-            <p>Packet 1 + Packet 2 + Packet 3 + Packet 4 + Packet 5 + Packet 6</p>
-            <p><strong>20 + 20 + 20 + 20 + 20 + 20 = 120 beads</strong></p>
+        <h2>🤔 What is Multiplication? 🤔</h2>
+        <p>Multiplication is like a super-fast way of doing addition!</p>
+        <p>Imagine you have 3 groups of apples, and each group has 4 apples.</p>
+        <div style="text-align: center; font-size: 2em; margin: 20px 0;">
+            🍎🍎🍎🍎 + 🍎🍎🍎🍎 + 🍎🍎🍎🍎
         </div>
-
-        <p>That's a lot of adding! There's a faster way called <strong>Multiplication</strong>.</p>
-        <p>When we add the <strong>same number</strong> again and again, we can multiply.</p>
-
-        <div class="example">
-            <p>We added the number <strong>20</strong>, <strong>6</strong> times.</p>
-            <p>So, we can write it like this:</p>
-            <p><strong>20 x 6 = 120 beads</strong></p>
-            <p>We read this as "Twenty times six equals one hundred twenty".</p>
-            <p>The '<strong>x</strong>' symbol means 'times' or 'multiply'.</p>
+        <p>You could count them all one by one, or you could add them: 4 + 4 + 4 = 12.</p>
+        <p>Multiplication lets us write this even faster:</p>
+        <div style="text-align: center; font-size: 1.5em; margin: 20px 0; font-weight: bold; color: #c0ca33;">
+            3 groups × 4 apples per group = 12 apples
         </div>
-
-        <h3>Meet the Multiplication Team!</h3>
-        <p>In <strong>20 x 6 = 120</strong>:</p>
-        <ul>
-            <li>The first number (<strong>20</strong>) is called the <span class="term">Multiplicand</span> (the number being multiplied).</li>
-            <li>The second number (<strong>6</strong>) is called the <span class="term">Multiplier</span> (how many times you multiply).</li>
-            <li>The answer (<strong>120</strong>) is called the <span class="term">Product</span>.</li>
-        </ul>
-
-        <p>So, Multiplication is just a shortcut for repeated adding!</p>
+        <p>So, <strong>3 × 4 = 12</strong>.</p>
+        <p>Multiplication helps us when we have equal groups of things. The '×' symbol means "times" or "groups of".</p>
 
         <hr style="margin: 30px 0;">
 
-        <h3>🎮 Let's Play a Game! 🎮</h3>
-        <div id="game-repeated-addition" class="interactive-game">
-            <p id="problem-text">Let's see...</p>
-            <div class="game-section">
-                <h4>Method 1: Repeated Adding</h4>
-                <p>Add the numbers together:</p>
-                <p><strong id="repeated-addition-string">? + ? + ?</strong></p>
-                <label for="addition-answer">Your Sum:</label>
-                <input type="number" id="addition-answer" class="answer-input">
+        <h3>🎮 Let's Practice! (Repeated Addition) 🎮</h3>
+
+        <!-- Add Instructions -->
+        <div style="background-color: #fff9c4; border: 1px solid #fdd835; padding: 10px; border-radius: 5px; margin-bottom: 15px;">
+            <strong>How to Play:</strong>
+            <ol style="margin-top: 5px; padding-left: 20px;">
+                <li>Look at the picture showing groups of items (like 🍎🍎 + 🍎🍎 + 🍎🍎).</li>
+                <li>Read the text describing the groups (e.g., "3 groups of 2").</li>
+                <li>In the "Write as Addition" box, type the addition problem (e.g., <code>2 + 2 + 2</code>).</li>
+                <li>In the "Write as Multiplication" box, type the multiplication problem *and* the answer (e.g., <code>3 x 2 = 6</code>). You can use 'x' or '*' for multiply.</li>
+                <li>Click "Check Answer" to see if you got it right!</li>
+            </ol>
+        </div>
+        <!-- End Instructions -->
+
+        <div id="game-intro-addition" class="interactive-game" style="background-color: #e8f5e9; border-color: #a5d6a7;">
+            <p id="intro-problem-visual" style="font-size: 1.8em; text-align: center; margin-bottom: 15px; color: #2e7d32;">?</p>
+            <p id="intro-problem-text" style="font-size: 1.2em; text-align: center; margin-bottom: 20px;">?</p>
+
+            <div class="game-section" style="background-color: #f1f8e9; border-color: #c5e1a5; margin-bottom: 10px;">
+                <label for="intro-addition-answer">Write as Addition:</label>
+                <input type="text" id="intro-addition-answer" class="answer-input" placeholder="e.g., 4 + 4 + 4" style="border-color: #aed581; width: 150px;">
             </div>
-            <div class="game-section">
-                <h4>Method 2: Multiplication (The Shortcut!)</h4>
-                <p>Use the multiplication sign (x):</p>
-                <p><strong id="multiplication-string">? x ?</strong></p>
-                <label for="multiplication-answer">Your Product:</label>
-                <input type="number" id="multiplication-answer" class="answer-input">
+            <div class="game-section" style="background-color: #f1f8e9; border-color: #c5e1a5;">
+                <label for="intro-multiply-answer">Write as Multiplication:</label>
+                <input type="text" id="intro-multiply-answer" class="answer-input" placeholder="e.g., 3 x 4 = 12" style="border-color: #aed581; width: 150px;">
             </div>
-            <button id="check-button" class="game-button">Check My Answers!</button>
-            <button id="new-problem-button" class="game-button">New Problem</button>
-            <p id="feedback" class="feedback-message"></p>
+
+            <button id="intro-check-button" class="game-button" style="background-color: #66bb6a; margin-top: 15px;">Check Answer</button>
+            <button id="intro-new-problem-button" class="game-button" style="background-color: #4caf50; margin-top: 15px;">New Problem</button>
+            <p id="intro-feedback" class="feedback-message"></p>
         </div>
 
     </main>
@@ -93,9 +86,11 @@
         <p>🚀 Keep Practicing! 🚀</p>
     </footer>
 
-    <!-- Load main script FIRST -->
+    <!-- Load SCORM API Wrapper FIRST -->
+    <script src="../js/SCORM_API_wrapper.js"></script>
+    <!-- Load main script (handles score loading/saving) -->
     <script src="../js/script.js"></script>
     <!-- Load page-specific script -->
-    <script src="../js/introduction.js"></script>
+    <script src="../js/introduction.js"></script> <!-- Added new script -->
 </body>
 </html>

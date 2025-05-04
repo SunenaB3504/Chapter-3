@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Score & Rewards! - Nia's Multiplication Adventure!</title>
+    <title>🏆 Score & Rewards - Nia's Multiplication Adventure!</title>
     <link rel="stylesheet" href="../css/style.css">
     <!-- Add Favicon Link -->
     <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="90" font-size="90">✨</text></svg>'>
@@ -33,17 +33,60 @@
          .reward-list .achieved .points {
              color: #2e7d32; /* Darker green */
          }
+        /* Add styles for rewards list */
+        .rewards-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 20px;
+        }
+        .rewards-list li {
+            background-color: #fffde7;
+            border: 1px solid #fff9c4;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .rewards-list .reward-info span {
+            display: block;
+            font-size: 1.1em;
+        }
+        .rewards-list .reward-info .cost {
+            font-size: 0.9em;
+            color: #777;
+        }
+        .rewards-list button {
+            padding: 8px 15px;
+            font-size: 0.9em;
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+            background-color: #ffb300; /* Claim button color */
+            color: #333;
+        }
+        .rewards-list button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+            color: #666;
+        }
+        #claim-feedback {
+            margin-top: 15px;
+            font-weight: bold;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
     <header>
         <h1>✨ Nia's Multiplication Adventure! ✨</h1>
-         <!-- Ensure Score/Reward Display is present -->
-         <div style="text-align: center; color: white; font-size: 1.2em; margin-bottom: 10px;">
+        <!-- Score display in header (already handled by script.js) -->
+        <div style="text-align: center; color: white; font-size: 1.2em; margin-bottom: 10px;">
             Score: <span id="current-score">0</span> 🏆 | <span id="reward-message"></span>
         </div>
         <nav>
-            <ul>
+             <ul>
                 <li><a href="../index.html">🏠 Home</a></li>
                 <li><a href="introduction.html">🤔 What is Multiplication?</a></li>
                 <li><a href="facts.html">🔢 Multiplication Facts</a></li>
@@ -52,6 +95,7 @@
                 <li><a href="2digit.html">✖️ Multiplying Bigger Numbers</a></li>
                 <li><a href="lattice.html">格子 Lattice Method</a></li>
                 <li><a href="problems.html">✏️ Practice Problems</a></li>
+                <li><a href="shopping.html">🛒 Shopping Math</a></li>
                 <li><a href="rewards.html">🏆 Score & Rewards</a></li>
             </ul>
         </nav>
@@ -59,27 +103,29 @@
 
     <main id="content">
         <h2>🏆 Your Score & Rewards! 🏆</h2>
+        <p style="font-size: 1.5em; text-align: center; margin: 20px 0;">
+            Your Current Score: <strong id="rewards-score-display" style="color: #ff6f00;">?</strong>
+        </p>
 
-        <div class="example" style="text-align: center;">
-            <p>Your Current Score:</p>
-            <p style="font-size: 2.5em; font-weight: bold; color: #7b1fa2;" id="rewards-page-score">0</p>
-        </div>
+        <h3>🎁 Redeem Your Points! 🎁</h3>
+        <p>Use your points to unlock cool rewards!</p>
 
-        <h3>🌟 Reward Milestones 🌟</h3>
-        <ul class="reward-list" id="rewards-list-details">
-            <li data-score="5">Reach <span class="points">5 Points</span> for a Good Start! ✨ <span class="trade-button-placeholder"></span></li>
-            <li data-score="20">Reach <span class="points">20 Points</span> - You're learning fast! 👍 <span class="trade-button-placeholder"></span></li>
-            <li data-score="50">Reach <span class="points">50 Points</span> - Great Job! Keep it up! 🎉 <span class="trade-button-placeholder"></span></li>
-            <li data-score="100">Reach <span class="points">100 Points</span> - Multiplication Master! 🌟 <span class="trade-button-placeholder"></span></li>
-            <li data-score="500">Reach <span class="points">500 Points</span> - CANDY Reward! 🍬 <span class="trade-button-placeholder"></span></li>
-            <li data-score="1000">Reach <span class="points">1000 Points</span> - ICE CREAM Reward! 🍦 <span class="trade-button-placeholder"></span></li>
-            <li data-score="2000">Reach <span class="points">2000 Points</span> - BURGER Reward! 🍔 <span class="trade-button-placeholder"></span></li>
-            <li data-score="3000">Reach <span class="points">3000 Points</span> - Fried CHICKEN Reward! 🍗 <span class="trade-button-placeholder"></span></li>
-            <li data-score="4000">Reach <span class="points">4000 Points</span> - PIZZA Reward! 🍕 <span class="trade-button-placeholder"></span></li>
-            <li data-score="5000">Reach <span class="points">5000 Points</span> - New BOOK Reward! 📚 <span class="trade-button-placeholder"></span></li>
-            <li data-score="10000">Reach <span class="points">10000 Points</span> - TOY Reward! 🧸 <span class="trade-button-placeholder"></span></li>
-            <!-- Add more rewards here if needed -->
+        <ul id="rewards-list" class="rewards-list">
+            <!-- Rewards will be loaded here by JavaScript -->
+            <li>Loading rewards...</li>
         </ul>
+
+        <p id="claim-feedback" class="feedback-message"></p> <!-- Feedback for claiming -->
+
+        <!-- Keep old levels for reference if desired -->
+        <!--
+        <h3>Reward Levels (Reference):</h3>
+        <ul>
+            <li><strong>20+ Points:</strong> 👍 Keep it up! 👍</li>
+            <li><strong>50+ Points:</strong> 🚀 Math Rocket! 🚀</li>
+            <li><strong>100+ Points:</strong> 🌟 Super Star! 🌟</li>
+        </ul>
+        -->
 
     </main>
 
@@ -87,7 +133,9 @@
         <p>🚀 Keep Practicing! 🚀</p>
     </footer>
 
-    <!-- Load main script FIRST -->
+    <!-- Load SCORM API Wrapper FIRST -->
+    <script src="../js/SCORM_API_wrapper.js"></script>
+    <!-- Load main script (loads score) -->
     <script src="../js/script.js"></script>
     <!-- Load page-specific script -->
     <script src="../js/rewards.js"></script>

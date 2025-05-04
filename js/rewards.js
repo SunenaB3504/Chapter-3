@@ -1,71 +1,185 @@
 console.log("Rewards script loaded!");
 
-function displayRewardsPageDetails() {
-    const score = getScore(); // Get score from script.js
-    const scoreDisplay = document.getElementById('rewards-page-score');
-    const rewardsList = document.getElementById('rewards-list-details');
 
-    if (scoreDisplay) {
-        scoreDisplay.textContent = score;
-    }
+// --- Reward Definitions ---
+// Structure: id: { name: "Reward Name", cost: points, claimed: false }
+const availableRewards = {
+    reward1: { name: "✨ Sparkle Sticker Pack", cost: 30, claimed: false },
+    reward2: { name: "🚀 Rocket Racer Badge", cost: 75, claimed: false },
+    reward3: { name: "🌟 Super Star Certificate", cost: 150, claimed: false },
+    reward4: { name: "🎨 Extra Drawing Colors", cost: 250, claimed: false },
+    // Added new rewards
+    reward5: { name: "🍬 Candy Treat", cost: 500, claimed: false },
+    reward6: { name: "🍦 Ice Cream Cone", cost: 1000, claimed: false },
+    reward7: { name: "🍔 Burger Bonus", cost: 2000, claimed: false },
+    reward8: { name: "🍗 Fried Chicken Feast", cost: 3000, claimed: false },
+    reward9: { name: "🍕 Pizza Party Slice", cost: 4000, claimed: false },
+    reward10: { name: "📚 New Story Book", cost: 5000, claimed: false },
+    reward11: { name: "🎁 Surprise Toy", cost: 10000, claimed: false }
+};
 
-    if (rewardsList) {
-        const rewardItems = rewardsList.querySelectorAll('li');
-        rewardItems.forEach(item => {
-            const requiredScore = parseInt(item.getAttribute('data-score'));
-            const placeholder = item.querySelector('.trade-button-placeholder');
-            placeholder.innerHTML = ''; // Clear previous button/text
+// --- DOM Elements ---
+let rewardsScoreDisplay = null;
+let rewardsListElement = null;
+let claimFeedbackElement = null;
 
-            if (!isNaN(requiredScore) && score >= requiredScore) {
-                item.classList.add('achieved');
+// --- Functions ---
 
-                // Check if already traded (using a data attribute)
-                if (item.getAttribute('data-traded') !== 'true') {
-                    const tradeButton = document.createElement('button');
-                    tradeButton.textContent = 'Trade In!';
-                    tradeButton.classList.add('trade-button');
-                    tradeButton.onclick = () => handleTrade(item, requiredScore);
-                    placeholder.appendChild(tradeButton);
-                } else {
-                    placeholder.textContent = ' (Traded!)';
-                    placeholder.style.fontWeight = 'normal';
-                    placeholder.style.color = 'grey';
+// Load claimed status from localStorage
+function loadRewardStatus() {
+    try {
+        const claimedStatus = localStorage.getItem('niaAdventureClaimedRewards');
+        if (claimedStatus) {
+            const claimedData = JSON.parse(claimedStatus);
+            for (const id in availableRewards) {
+                if (claimedData[id] === true) {
+                    availableRewards[id].claimed = true;
                 }
-
-            } else {
-                item.classList.remove('achieved');
-                item.removeAttribute('data-traded'); // Reset traded status if score drops below threshold
             }
-        });
+            console.log("Loaded claimed reward status:", availableRewards);
+        } else {
+            console.log("No claimed reward status found in localStorage.");
+        }
+    } catch (error) {
+        console.error("Error loading claimed reward status:", error);
     }
 }
 
-function handleTrade(listItem, pointsValue) {
-    // Confirmation dialog for parent
-    const confirmationMessage = `Parent Confirmation:\n\nTrade ${pointsValue} points for this reward?\n\n(Points will be deducted)`;
-    if (confirm(confirmationMessage)) {
-        // Parent confirmed
-        deductScore(pointsValue); // Call function from script.js
+// Save claimed status to localStorage
+function saveRewardStatus() {
+    try {
+        const claimedData = {};
+        for (const id in availableRewards) {
+            if (availableRewards[id].claimed) {
+                claimedData[id] = true;
+            }
+        }
+        localStorage.setItem('niaAdventureClaimedRewards', JSON.stringify(claimedData));
+        console.log("Saved claimed reward status:", claimedData);
+    } catch (error) {
+        console.error("Error saving claimed reward status:", error);
+    }
+}
 
-        // Mark as traded visually and prevent further trading
-        listItem.setAttribute('data-traded', 'true'); // Mark item as traded
+// Render the list of rewards
+function displayRewards() {
+    if (!rewardsListElement) return;
+    rewardsListElement.innerHTML = ''; // Clear loading message
 
-        // Update the display immediately
-        displayRewardsPageDetails(); // Refresh the list to show changes
-        displayScore(); // Refresh score in header (already done by deductScore, but safe to call)
-        checkRewards(); // Refresh reward message in header (already done by deductScore, but safe to call)
+    // Ensure currentScore is available (loaded by script.js)
+    const score = (typeof currentScore !== 'undefined') ? currentScore : 0;
 
-        // Update the main score display on this page too
-        const scoreDisplay = document.getElementById('rewards-page-score');
-         if (scoreDisplay) {
-            scoreDisplay.textContent = getScore();
+    for (const id in availableRewards) {
+        const reward = availableRewards[id];
+        const li = document.createElement('li');
+
+        const infoDiv = document.createElement('div');
+        infoDiv.className = 'reward-info';
+        const nameSpan = document.createElement('span');
+        nameSpan.textContent = reward.name;
+        const costSpan = document.createElement('span');
+        costSpan.className = 'cost';
+        costSpan.textContent = `Cost: ${reward.cost} points`;
+        infoDiv.appendChild(nameSpan);
+        infoDiv.appendChild(costSpan);
+
+        const claimButton = document.createElement('button');
+        claimButton.dataset.rewardId = id; // Store reward ID on the button
+
+        if (reward.claimed) {
+            claimButton.textContent = 'Claimed ✔️';
+            claimButton.disabled = true;
+        } else if (score >= reward.cost) {
+            claimButton.textContent = 'Claim';
+            claimButton.disabled = false;
+            claimButton.addEventListener('click', handleClaimReward);
+        } else {
+            claimButton.textContent = 'Need More Points';
+            claimButton.disabled = true;
+        }
+
+        li.appendChild(infoDiv);
+        li.appendChild(claimButton);
+        rewardsListElement.appendChild(li);
+    }
+}
+
+// Handle clicking the "Claim" button
+function handleClaimReward(event) {
+    const button = event.target;
+    const rewardId = button.dataset.rewardId;
+    const reward = availableRewards[rewardId];
+    const score = (typeof currentScore !== 'undefined') ? currentScore : 0;
+
+    if (claimFeedbackElement) claimFeedbackElement.textContent = ''; // Clear previous feedback
+
+    if (reward && !reward.claimed && score >= reward.cost) {
+        console.log(`Attempting to claim reward: ${rewardId}`);
+
+        // 1. Deduct points (using a function that updates global score and saves)
+        const pointsToDeduct = -reward.cost; // Negative value for deduction
+        if (typeof updateScore === 'function') {
+            updateScore(pointsToDeduct); // This function should handle saving score
+        } else {
+            console.error("updateScore function not found!");
+            // Manual update as fallback (less ideal)
+            currentScore += pointsToDeduct;
+            if (typeof updateScoreDisplay === 'function') updateScoreDisplay();
+            if (typeof saveScormData === 'function') saveScormData(); // Or just save localStorage part
+            else localStorage.setItem('niaAdventureScore', currentScore.toString());
+        }
+
+
+        // 2. Mark as claimed
+        reward.claimed = true;
+
+        // 3. Save claimed status
+        saveRewardStatus();
+
+        // 4. Update UI
+        updateScoreDisplayOnPage(); // Update score on this page
+        displayRewards(); // Re-render the list to update button states
+
+        // 5. Show feedback
+        if (claimFeedbackElement) {
+            claimFeedbackElement.textContent = `🎉 You claimed the ${reward.name}! 🎉`;
+            claimFeedbackElement.className = 'feedback-message feedback-correct';
         }
 
     } else {
-        // Parent cancelled
-        console.log("Trade cancelled by parent.");
+        console.warn(`Could not claim reward: ${rewardId}. Reward found: ${!!reward}, Claimed: ${reward?.claimed}, Score: ${score}, Cost: ${reward?.cost}`);
+        if (claimFeedbackElement) {
+            claimFeedbackElement.textContent = 'Cannot claim this reward right now.';
+            claimFeedbackElement.className = 'feedback-message feedback-incorrect';
+        }
     }
 }
 
-// Run when the DOM is loaded, after the main script has initialized the score display
-document.addEventListener('DOMContentLoaded', displayRewardsPageDetails);
+// Update the score display specifically on this rewards page
+function updateScoreDisplayOnPage() {
+     if (rewardsScoreDisplay) {
+        const score = (typeof currentScore !== 'undefined') ? currentScore : 0;
+        rewardsScoreDisplay.textContent = score;
+    }
+}
+
+
+// --- Initial Load ---
+document.addEventListener('DOMContentLoaded', () => {
+    console.log("Rewards page DOM loaded.");
+
+    // Get elements
+    rewardsScoreDisplay = document.getElementById('rewards-score-display');
+    rewardsListElement = document.getElementById('rewards-list');
+    claimFeedbackElement = document.getElementById('claim-feedback');
+
+    // Load status from storage
+    loadRewardStatus();
+
+    // Display current score (should be loaded by script.js)
+    updateScoreDisplayOnPage();
+
+    // Display the rewards list
+    displayRewards();
+
+});

@@ -1,124 +1,178 @@
-console.log("Introduction script loaded!");
+console.log("--- SIMPLIFIED Introduction script loaded! v2 ---"); // Add a version number
 
+// --- Game Elements ---
+// Declare with let, but don't assign yet
+let visualEl = null;
+let textEl = null;
+let additionInput = null;
+let multiplyInput = null;
+let checkButton = null;
+let newButton = null;
+let feedbackEl = null;
 
-// Game Elements
-const problemTextElement = document.getElementById('problem-text');
-const additionStringElement = document.getElementById('repeated-addition-string');
-const multiplicationStringElement = document.getElementById('multiplication-string');
-const additionAnswerInput = document.getElementById('addition-answer');
-const multiplicationAnswerInput = document.getElementById('multiplication-answer');
-const checkButton = document.getElementById('check-button');
-const newProblemButton = document.getElementById('new-problem-button');
-const feedbackElement = document.getElementById('feedback');
+// --- Game State ---
+let groups, itemsPerGroup, totalItems;
+let correctAdditionString, correctMultiplyString;
+let attemptedIntro = false;
 
-let currentCorrectAnswer = 0;
-let groups = 0;
-let itemsPerGroup = 0;
-let problemAttempted = false; // Track if user tried to answer
+// --- Emojis for Visuals ---
+const itemEmojis = ['🍎', '🍌', '🍇', '🍉', '🍓', '🍒'];
 
-// Function to generate a random number between min and max (inclusive)
-function getRandomInt(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+// --- Functions ---
 
-// Function to generate and display a new problem
 function generateProblem() {
-    groups = getRandomInt(2, 7); // e.g., 2 to 7 groups/packets
-    itemsPerGroup = getRandomInt(2, 10); // e.g., 2 to 10 items/beads per group
-    currentCorrectAnswer = groups * itemsPerGroup;
+    console.log("[Intro Game] generateProblem function called.");
+    // Ensure elements are assigned before using them
+    if (!visualEl || !textEl) {
+        console.error("[Intro Game] generateProblem called before elements were assigned!");
+        return; // Exit if elements aren't ready
+    }
+    groups = window.getRandomInt(2, 5);
+    itemsPerGroup = window.getRandomInt(2, 6);
+    totalItems = groups * itemsPerGroup;
 
-    // Create problem text
-    const items = ["apples", "beads", "stars", "cookies", "pencils"];
-    const containers = ["packets", "baskets", "boxes", "jars", "bags"];
-    const randomItem = items[getRandomInt(0, items.length - 1)];
-    const randomContainer = containers[getRandomInt(0, containers.length - 1)];
-    problemTextElement.textContent = `You have ${groups} ${randomContainer}. Each ${randomContainer.slice(0, -1)} has ${itemsPerGroup} ${randomItem}. How many ${randomItem} in total?`;
+    // Generate visual representation
+    let visual = "";
+    const randomEmoji = itemEmojis[window.getRandomInt(0, itemEmojis.length - 1)];
+    for (let i = 0; i < groups; i++) {
+        visual += `<span>${randomEmoji.repeat(itemsPerGroup)}</span>` + (i < groups - 1 ? ' + ' : '');
+    }
+    console.log(`[Intro Game] Updating visualEl. Setting innerHTML to: ${visual}`);
+    visualEl.innerHTML = visual; // Now uses the assigned global variable
 
-    // Create repeated addition string
-    let additionString = Array(groups).fill(itemsPerGroup).join(' + ');
-    additionStringElement.textContent = additionString;
+    // Generate text description
+    const problemDescription = `${groups} groups of ${itemsPerGroup}`;
+    console.log(`[Intro Game] Updating textEl. Setting textContent to: ${problemDescription}`);
+    textEl.textContent = problemDescription; // Now uses the assigned global variable
 
-    // Create multiplication string
-    multiplicationStringElement.textContent = `${groups} x ${itemsPerGroup}`;
-
-    // Reset attempt tracker
+    // Generate correct answers
+    correctAdditionString = Array(groups).fill(itemsPerGroup).join('+');
+    correctMultiplyString = `${groups}x${itemsPerGroup}=${totalItems}`;
 
     // Clear inputs and feedback
-    additionAnswerInput.value = '';
-    multiplicationAnswerInput.value = '';
-    feedbackElement.textContent = '';
-    feedbackElement.className = 'feedback-message'; // Reset class
-    additionAnswerInput.classList.remove('feedback-correct', 'feedback-incorrect');
-    multiplicationAnswerInput.classList.remove('feedback-correct', 'feedback-incorrect');
-
+    if (additionInput) additionInput.value = ''; else console.warn("[Intro Game] additionInput not found for clearing.");
+    if (multiplyInput) multiplyInput.value = ''; else console.warn("[Intro Game] multiplyInput not found for clearing.");
+    if (feedbackEl) feedbackEl.textContent = ''; else console.warn("[Intro Game] feedbackEl not found for clearing.");
+    attemptedIntro = false;
+    console.log(`[Intro Game] New problem generated. Correct Add: ${correctAdditionString}, Correct Mult: ${correctMultiplyString}`);
 }
 
-// Function to check the user's answers
+function normalizeInput(inputStr) {
+    return inputStr.replace(/\s+/g, '').replace(/[*xX]/g, 'x');
+}
+
 function checkAnswer() {
-    const additionAnswer = parseInt(additionAnswerInput.value);
-    const multiplicationAnswer = parseInt(multiplicationAnswerInput.value);
-    let isAdditionCorrect = false;
-    let isMultiplicationCorrect = false;
-    let awardedPoints = 0; // Points awarded in this check
-
-    // Reset input styles
-    additionAnswerInput.classList.remove('feedback-correct', 'feedback-incorrect');
-    multiplicationAnswerInput.classList.remove('feedback-correct', 'feedback-incorrect');
-
-
-    if (!isNaN(additionAnswer) && additionAnswer === currentCorrectAnswer) {
-        isAdditionCorrect = true;
-        additionAnswerInput.classList.add('feedback-correct');
-        if (!problemAttempted) awardedPoints += 5;
-    } else if (additionAnswerInput.value !== '') {
-         additionAnswerInput.classList.add('feedback-incorrect');
+    console.log(`[Intro Game] checkAnswer function called. Attempted: ${attemptedIntro}`);
+     // Ensure elements are assigned before using them
+    if (!additionInput || !multiplyInput || !feedbackEl) {
+        console.error("[Intro Game] checkAnswer called before input/feedback elements were assigned!");
+        return; // Exit if elements aren't ready
     }
 
-     if (!isNaN(multiplicationAnswer) && multiplicationAnswer === currentCorrectAnswer) {
-        isMultiplicationCorrect = true;
-        multiplicationAnswerInput.classList.add('feedback-correct');
-        if (!problemAttempted) awardedPoints += 5;
-    } else if (multiplicationAnswerInput.value !== '') {
-         multiplicationAnswerInput.classList.add('feedback-incorrect');
-    }
+    const userAddition = normalizeInput(additionInput.value);
+    const userMultiply = normalizeInput(multiplyInput.value);
+    const normalizedCorrectAddition = normalizeInput(correctAdditionString);
+    const normalizedCorrectMultiply = normalizeInput(correctMultiplyString);
 
-    // Mark problem as attempted
-    if (additionAnswerInput.value !== '' || multiplicationAnswerInput.value !== '') {
-        problemAttempted = true;
-    }
+    let additionCorrect = (userAddition === normalizedCorrectAddition);
+    let multiplyCorrect = (userMultiply === normalizedCorrectMultiply);
+    let awardedPoints = 0;
 
-    // Update score if points were awarded
-    if (awardedPoints > 0) {
-        updateScore(awardedPoints); // Call the global score update function
-    }
+    console.log(`User Add: '${userAddition}', Correct Add: '${normalizedCorrectAddition}' -> ${additionCorrect}`);
+    console.log(`User Mult: '${userMultiply}', Correct Mult: '${normalizedCorrectMultiply}' -> ${multiplyCorrect}`);
 
-    // Provide overall feedback - UPDATED FEEDBACK MESSAGES
-    if (isAdditionCorrect && isMultiplicationCorrect) {
-        feedbackElement.textContent = `Correct! 🎉 Both ways give the same answer! (+${awardedPoints} points!)`; // Show points
-        feedbackElement.className = 'feedback-message feedback-correct';
-    } else if (isAdditionCorrect || isMultiplicationCorrect) {
-         const correctMethodPoints = 5; // Points per correct method on first try
-         const earnedText = awardedPoints > 0 ? ` (+${awardedPoints} points!)` : ''; // Show points only if earned this turn
-         feedbackElement.textContent = `One is right! Keep trying on the other one. 🤔${earnedText}`;
-         feedbackElement.className = 'feedback-message feedback-incorrect'; // Or a neutral color
-    }
-     else if (additionAnswerInput.value === '' && multiplicationAnswerInput.value === '') {
-         feedbackElement.textContent = 'Please enter your answers first!';
-         feedbackElement.className = 'feedback-message feedback-incorrect';
-    }
-    else {
-        feedbackElement.textContent = 'Not quite right. Try again! You can do it! 💪';
-        feedbackElement.className = 'feedback-message feedback-incorrect';
+    if (additionCorrect && multiplyCorrect) {
+        if (!attemptedIntro) {
+            awardedPoints = 5;
+            console.log(`Correct first attempt! Awarding ${awardedPoints} points.`);
+            if (typeof window.updateScore === 'function') {
+                window.updateScore(awardedPoints);
+            } else {
+                console.error("window.updateScore function is NOT available!");
+            }
+            feedbackEl.textContent = `Perfect! You understand repeated addition and multiplication! (+${awardedPoints} points!)`;
+        } else {
+            console.log("Correct, but not the first attempt.");
+            feedbackEl.textContent = 'Perfect! You understand repeated addition and multiplication!';
+        }
+        feedbackEl.className = 'feedback-message feedback-correct';
+        attemptedIntro = true;
+    } else {
+        let errorMsg = "Not quite right. ";
+        if (!additionCorrect && multiplyCorrect) {
+            errorMsg += `Check the addition. It should be ${correctAdditionString}.`;
+        } else if (additionCorrect && !multiplyCorrect) {
+            errorMsg += `Check the multiplication. It should be ${correctMultiplyString}.`;
+        } else {
+            errorMsg += `Check both the addition (should be ${correctAdditionString}) and the multiplication (should be ${correctMultiplyString}).`;
+        }
+        feedbackEl.textContent = errorMsg + " 🤔";
+        feedbackEl.className = 'feedback-message feedback-incorrect';
+        if (!attemptedIntro) {
+            attemptedIntro = true;
+            console.log("Incorrect first attempt. Setting attemptedIntro to true.");
+        }
     }
 }
 
-// Event Listeners
-checkButton.addEventListener('click', checkAnswer);
-newProblemButton.addEventListener('click', generateProblem);
+// --- Initial Load ---
+document.addEventListener('DOMContentLoaded', () => {
+    console.log("Introduction page DOM loaded");
 
-// Generate the first problem when the page loads
-// generateProblem(); // This is called by the event listener in script.js now
+    // Assign elements to the global 'let' variables
+    visualEl = document.getElementById('intro-problem-visual');
+    textEl = document.getElementById('intro-problem-text');
+    additionInput = document.getElementById('intro-addition-answer');
+    multiplyInput = document.getElementById('intro-multiply-answer');
+    checkButton = document.getElementById('intro-check-button'); // Assign to global checkButton
+    newButton = document.getElementById('intro-new-problem-button');   // Assign to global newButton
+    feedbackEl = document.getElementById('intro-feedback');
 
-// Note: initializeScore in script.js calls displayScore and checkRewards on load.
-// generateProblem() should still be called to set up the first game state.
-document.addEventListener('DOMContentLoaded', generateProblem);
+    console.log("Global element variables assigned inside DOMContentLoaded:", {
+        visualEl: !!visualEl,
+        textEl: !!textEl,
+        additionInput: !!additionInput,
+        multiplyInput: !!multiplyInput,
+        checkButton: !!checkButton,
+        newButton: !!newButton,
+        feedbackEl: !!feedbackEl
+    });
+
+    // Attach listeners using the now assigned global variables
+    if (checkButton) {
+        console.log("Attaching listener to Check button (intro-check-button)");
+        checkButton.addEventListener('click', checkAnswer);
+    } else {
+        console.error("Check button (intro-check-button) not found!");
+    }
+
+    if (newButton) {
+        console.log("Attaching listener to New Problem button (intro-new-problem-button)");
+        newButton.addEventListener('click', generateProblem);
+    } else {
+        console.error("New Problem button (intro-new-problem-button) not found!");
+    }
+
+    if (multiplyInput) {
+        console.log("Attaching keypress listener to multiply input (intro-multiply-answer)");
+        multiplyInput.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                console.log("[Intro Game] Enter key pressed in multiply input.");
+                event.preventDefault();
+                checkAnswer();
+            }
+        });
+    } else {
+         console.warn("Multiply input (intro-multiply-answer) not found for Enter key listener.");
+    }
+
+    // Generate initial problem only if essential elements were successfully assigned
+    if (visualEl && textEl && additionInput && multiplyInput && checkButton && newButton && feedbackEl) {
+         console.log("All essential elements assigned, generating initial problem...");
+         generateProblem();
+    } else {
+        console.error("One or more essential elements for the introduction game could not be assigned! Cannot generate initial problem.");
+    }
+});
+
+console.log("--- SIMPLIFIED Introduction script finished! v2 ---");

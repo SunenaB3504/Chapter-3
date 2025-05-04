@@ -6,6 +6,7 @@ const urlsToCache = [
   '/css/style.css',
   '/js/SCORM_API_wrapper.js', // Keep if needed, though SCORM won't work offline
   '/js/script.js',
+  '/js/introduction.js', // Added introduction.js
   '/js/facts.js',
   '/js/properties.js',
   '/js/tens.js',

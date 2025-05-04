@@ -1,5 +1,7 @@
 console.log("Properties script loaded!");
 
+let attemptedCommutative = false; // Flag for commutative game
+
 // --- Helper ---
 // Ensure getRandomInt is available (it should be from script.js)
 if (typeof window.getRandomInt !== 'function') {
@@ -20,23 +22,29 @@ let commNum1 = 0, commNum2 = 0, commProduct = 0;
 let commAttempted = false;
 
 function generateCommProblem() {
-    commNum1 = window.getRandomInt(1, 12);
-    commNum2 = window.getRandomInt(1, 12);
-    // Ensure numbers are different for a clearer example
+    console.log("--- [Commutative] NEW PROBLEM ---");
+    commNum1 = window.getRandomInt(2, 9);
+    commNum2 = window.getRandomInt(2, 9);
+    // Ensure numbers are different for clarity
     while (commNum1 === commNum2) {
-        commNum2 = window.getRandomInt(1, 12);
+        commNum2 = window.getRandomInt(2, 9);
     }
     commProduct = commNum1 * commNum2;
 
+    // Display problem
     if(commEq1Lhs) commEq1Lhs.textContent = `${commNum1} x ${commNum2}`;
     if(commEq1Rhs) commEq1Rhs.textContent = commProduct;
     if(commEq2Lhs) commEq2Lhs.textContent = `${commNum2} x ${commNum1}`;
     if(commAnswerInput) commAnswerInput.value = '';
     if(commFeedback) commFeedback.textContent = '';
+
+    // *** Force reset the flag ***
     commAttempted = false;
+    console.log(`[Commutative] Flag 'attemptedCommutative' RESET to: ${commAttempted}`);
 }
 
 function checkCommAnswer() {
+    console.log(`[Commutative] CHECKING answer. Flag 'attemptedCommutative' is currently: ${commAttempted}`);
     const userAnswer = parseInt(commAnswerInput.value);
     let awardedPoints = 0;
     if (isNaN(userAnswer)) {
@@ -45,20 +53,50 @@ function checkCommAnswer() {
         return;
     }
 
+    // Check if the answer is correct
     if (userAnswer === commProduct) {
+        console.log("[Commutative] Answer is CORRECT.");
+        // Award points only if it's the first attempt *for this specific problem*
         if (!commAttempted) {
-            awardedPoints = 5;
-            updateScore(awardedPoints);
-            commFeedback.textContent = `Correct! They are the same! 👍 (+${awardedPoints} points!)`;
+            awardedPoints = 5; // Points for commutative property
+            console.log(`[Commutative] First correct attempt! Awarding ${awardedPoints} points.`);
+
+            // *** Explicitly check if updateScore exists before calling ***
+            if (typeof window.updateScore === 'function') {
+                console.log("[Commutative] Calling window.updateScore...");
+                try {
+                    window.updateScore(awardedPoints);
+                    console.log("[Commutative] window.updateScore call completed.");
+                } catch (e) {
+                    console.error("[Commutative] Error calling window.updateScore:", e);
+                }
+            } else {
+                console.error("[Commutative] window.updateScore function NOT FOUND!");
+            }
+
+            commFeedback.textContent = `Correct! 🎉 Both ways give the same answer! (+${awardedPoints} points!)`;
+            // *** Set the flag immediately after successful first attempt processing ***
+            commAttempted = true;
+            console.log(`[Commutative] Flag 'attemptedCommutative' SET to: ${commAttempted}`);
+
         } else {
-            commFeedback.textContent = 'Correct! They are the same! 👍';
+            // Correct answer, but not the first attempt for this problem
+            console.log("[Commutative] Correct, but flag 'attemptedCommutative' is true. No points awarded.");
+            commFeedback.textContent = 'Correct! 🎉 Both ways give the same answer!';
         }
         commFeedback.className = 'feedback-message feedback-correct';
     } else {
-        commFeedback.textContent = `Not quite. ${commNum2} x ${commNum1} is also ${commProduct}.`;
+        // Incorrect answer
+        console.log("[Commutative] Answer is INCORRECT.");
+        commFeedback.textContent = `Not quite. Remember, ${commNum1} x ${commNum2} is the same as ${commNum2} x ${commNum1}. The answer is ${commProduct}. 😊`;
         commFeedback.className = 'feedback-message feedback-incorrect';
+
+        // Set the flag if it was the first attempt (even if wrong)
+        if (!commAttempted) {
+            commAttempted = true;
+            console.log(`[Commutative] Incorrect first attempt. Flag 'attemptedCommutative' SET to: ${commAttempted}`);
+        }
     }
-    commAttempted = true;
 }
 
 if(commCheckButton) commCheckButton.addEventListener('click', checkCommAnswer);

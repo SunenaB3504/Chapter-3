@@ -2,145 +2,192 @@
 console.log("Nia's Multiplication Adventure script loaded!");
 console.log("--- script.js execution started ---");
 
-// --- Utility Functions ---
-console.log("Defining window.getRandomInt...");
-window.getRandomInt = function(min, max) {
-  // Add basic validation
-  if (typeof min !== 'number' || typeof max !== 'number') {
-      console.error('getRandomInt requires numbers as arguments');
-      return 0; // Or handle error appropriately
-  }
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-console.log("window.getRandomInt defined:", typeof window.getRandomInt);
-// --- End Utility Functions ---
+// --- Global Variables ---
+let currentScore = 0;
+const scoreDisplay = document.getElementById('current-score');
+const rewardMessageDisplay = document.getElementById('reward-message');
+let scormInitialized = false; // Flag to track SCORM initialization
 
-const SCORE_KEY = 'niaMultiplicationScore';
-const scoreDisplayElementId = 'current-score'; // ID for the score display element
-const rewardDisplayElementId = 'reward-message'; // ID for the reward display element
+// --- SCORM Integration Functions ---
 
-// --- Score Management ---
-// Initialize score if it doesn't exist
-function initializeScore() {
-    console.log("initializeScore called"); // Add log
-    if (localStorage.getItem(SCORE_KEY) === null) {
-        localStorage.setItem(SCORE_KEY, '0');
-    }
-    displayScore();
-    checkRewards(); // Check rewards on load
-    console.log("initializeScore finished"); // Add log
-}
+// Initialize SCORM connection
+function initializeScorm() {
+    console.log("Attempting SCORM Initialization...");
+    if (scorm_Initialize() === "true") {
+        scormInitialized = true;
+        console.log("SCORM Initialized Successfully.");
 
-// Get current score
-function getScore() {
-    return parseInt(localStorage.getItem(SCORE_KEY) || '0');
-}
+        // Check lesson status and entry mode
+        const lessonStatus = scorm_GetValue("cmi.core.lesson_status");
+        const entryMode = scorm_GetValue("cmi.core.entry");
+        console.log(`SCORM Status: ${lessonStatus}, Entry: ${entryMode}`);
 
-// Update score
-function updateScore(points) {
-    let currentScore = getScore();
-    currentScore += points;
-    localStorage.setItem(SCORE_KEY, currentScore.toString());
-    displayScore();
-    checkRewards(); // Check for new rewards after score update
-}
-
-// Deduct score after trading a reward
-function deductScore(pointsToDeduct) {
-    let currentScore = getScore();
-    // Ensure score doesn't go below zero (optional, but good practice)
-    currentScore = Math.max(0, currentScore - pointsToDeduct);
-    localStorage.setItem(SCORE_KEY, currentScore.toString());
-    displayScore(); // Update score display in header
-    checkRewards(); // Update reward message in header
-}
-
-// Display score
-function displayScore() {
-    const scoreElement = document.getElementById(scoreDisplayElementId);
-    if (scoreElement) {
-        scoreElement.textContent = getScore();
-    }
-}
-// --- End Score Management ---
-
-
-// --- Reward Management ---
-// Check and display rewards
-function checkRewards() {
-    const score = getScore();
-    const rewardElement = document.getElementById(rewardDisplayElementId);
-    let rewardMessage = '';
-
-    // Define rewards in descending order of points
-    const rewards = [
-        { points: 10000, message: '🎁🧸 WOW! 10,000 Points! TOY TIME! 🧸🎁' },
-        { points: 5000, message: '📚🥳 5,000 Points! New BOOK! 🥳📚' },
-        { points: 4000, message: '🍕🍕 4,000 Points! PIZZA PARTY! 🍕🍕' },
-        { points: 3000, message: '🍗🍗 3,000 Points! Fried CHICKEN! 🍗🍗' },
-        { points: 2000, message: '🍔🍔 2,000 Points! BURGER Treat! 🍔🍔' },
-        { points: 1000, message: '🍦🍦 1,000 Points! ICE CREAM! 🍦🍦' },
-        { points: 500, message: '🍬🍬 500 Points! CANDY! 🍬🍬' },
-        { points: 100, message: '🌟 Wow! 100 Points! Multiplication Master! 🌟' },
-        { points: 50, message: '🎉 Great Job! 50 Points! Keep it up! 🎉' },
-        { points: 20, message: '👍 Nice! 20 Points! You\'re learning fast! 👍' },
-        { points: 5, message: '✨ Good Start! 5 Points! ✨' }
-    ];
-
-    // Find the highest reward achieved
-    for (const reward of rewards) {
-        if (score >= reward.points) {
-            rewardMessage = reward.message;
-            break; // Stop checking once the highest reward is found
+        if (lessonStatus === "not attempted") {
+            scorm_SetValue("cmi.core.lesson_status", "incomplete");
+            console.log("Set lesson status to 'incomplete'.");
         }
-    }
 
-    if (rewardElement) {
-        rewardElement.textContent = rewardMessage;
-        // Optional: Add animation or special styling for rewards
-        if (rewardMessage) {
-             rewardElement.style.color = 'purple'; // Or cycle through colors?
-             rewardElement.style.fontWeight = 'bold';
-             // Add a little animation maybe?
-             rewardElement.animate([
-                { transform: 'scale(1)' },
-                { transform: 'scale(1.1)' },
-                { transform: 'scale(1)' }
-             ], {
-                duration: 300,
-                easing: 'ease-in-out'
-             });
+        // Load suspend data (contains the score)
+        const suspendData = scorm_GetValue("cmi.suspend_data");
+        console.log("Suspend Data Loaded:", suspendData);
+        if (suspendData && suspendData !== "" && !isNaN(parseInt(suspendData))) {
+            currentScore = parseInt(suspendData);
+            console.log("Score restored from suspend data:", currentScore);
         } else {
-             rewardElement.style.color = ''; // Reset style
-             rewardElement.style.fontWeight = '';
+            // Maybe load score.raw if suspend_data is empty/invalid?
+            const rawScore = scorm_GetValue("cmi.core.score.raw");
+             if (rawScore && rawScore !== "" && !isNaN(parseInt(rawScore))) {
+                 // Assuming rawScore is 0-100, we might need to scale *from* it if our internal score isn't 0-100
+                 // For now, let's assume suspend_data is primary and raw_score is just for reporting
+                 console.log("Loaded raw score (for info):", rawScore);
+             } else {
+                 console.log("No valid score found in suspend data or raw score. Starting fresh.");
+                 currentScore = 0;
+             }
         }
-    }
-}
-// --- End Reward Management ---
-
-// Example function (can be removed or kept for other uses)
-function checkAnswer(inputId, correctAnswer) {
-    const userAnswer = document.getElementById(inputId).value;
-    if (userAnswer == correctAnswer) {
-        alert("Correct! Great job!");
-        updateScore(10); // Update score by 10 points for a correct answer
-        // Add visual feedback (e.g., change border color)
+        updateScoreDisplay(); // Update display with loaded score
+        scorm_Commit(); // Commit after initial load/status set
     } else {
-        alert("Not quite, try again!");
-        // Add visual feedback
+        console.warn("SCORM Initialization Failed. Running in standalone mode.");
+        // Load score from localStorage as a fallback?
+        const savedScore = localStorage.getItem('niaAdventureScore');
+        if (savedScore !== null) {
+            currentScore = parseInt(savedScore, 10);
+        }
+        updateScoreDisplay();
     }
 }
+
+// Save score and suspend data to SCORM
+function saveScormData() {
+    if (!scormInitialized) {
+        // Save to localStorage as a fallback?
+        localStorage.setItem('niaAdventureScore', currentScore);
+        console.log("Standalone mode: Score saved to localStorage.");
+        return;
+    }
+
+    console.log("Saving SCORM Data...");
+    // Save score as suspend data for persistence
+    scorm_SetValue("cmi.suspend_data", currentScore.toString());
+    console.log("Set suspend_data:", currentScore.toString());
+
+    // Set raw score (0-100). We might need to scale `currentScore`.
+    // Let's assume a max possible score for scaling, e.g., 500 points = 100%
+    const maxPossibleScore = 500; // Adjust this based on your game's potential max score
+    const scaledScore = Math.min(100, Math.max(0, Math.round((currentScore / maxPossibleScore) * 100)));
+    scorm_SetValue("cmi.core.score.raw", scaledScore.toString());
+    scorm_SetValue("cmi.core.score.min", "0");
+    scorm_SetValue("cmi.core.score.max", "100");
+    console.log(`Set raw score: ${scaledScore} (Scaled from ${currentScore})`);
+
+    // Optionally set lesson status to completed/passed based on score or progress
+    // Example: Mark as completed if score > 0
+    if (currentScore > 0 && scorm_GetValue("cmi.core.lesson_status") === "incomplete") {
+         scorm_SetValue("cmi.core.lesson_status", "completed");
+         console.log("Set lesson status to 'completed'.");
+         // Or set to 'passed' if a certain score threshold is met
+         // if (scaledScore >= 80) { // Example passing score
+         //    scorm_SetValue("cmi.core.lesson_status", "passed");
+         //    console.log("Set lesson status to 'passed'.");
+         // }
+    }
+
+    if (scorm_Commit() === "true") {
+        console.log("SCORM Data Committed Successfully.");
+    } else {
+        console.error("SCORM Commit Failed.");
+    }
+}
+
+// Terminate SCORM connection
+function terminateScorm() {
+    if (!scormInitialized) return;
+    console.log("Terminating SCORM Connection...");
+    // Set exit mode to suspend so data is saved for next time
+    scorm_SetValue("cmi.core.exit", "suspend");
+    saveScormData(); // Ensure data is saved before terminating
+    if (scorm_Terminate() === "true") {
+        console.log("SCORM Terminated Successfully.");
+        scormInitialized = false;
+    } else {
+        console.error("SCORM Termination Failed.");
+    }
+}
+
+
+// --- Core Functions (Modified) ---
+
+// Function to update the score
+function updateScore(points) {
+    if (points === 0) return; // No change
+    currentScore += points;
+    console.log(`Score updated by ${points}. New score: ${currentScore}`);
+    updateScoreDisplay();
+    checkRewards();
+    saveScormData(); // Save score to SCORM/localStorage immediately after update
+}
+
+// Function to update the score display
+function updateScoreDisplay() {
+    if (scoreDisplay) {
+        scoreDisplay.textContent = currentScore;
+    } else {
+        console.warn("Score display element not found.");
+    }
+}
+
+// Function to check and display rewards
+function checkRewards() {
+    let message = "";
+    if (currentScore >= 100) {
+        message = "🌟 Super Star! 🌟";
+    } else if (currentScore >= 50) {
+        message = "🚀 Math Rocket! 🚀";
+    } else if (currentScore >= 20) {
+        message = "👍 Keep it up! 👍";
+    }
+    if (rewardMessageDisplay) {
+        rewardMessageDisplay.textContent = message;
+    }
+}
+
+// Function to initialize score (Now calls SCORM init)
+function initializeScore() {
+    console.log("initializeScore called");
+    // Initialize SCORM, which will load the score
+    initializeScorm();
+    // Display is updated within initializeScorm after loading
+    checkRewards(); // Check rewards based on loaded score
+    console.log("initializeScore finished");
+}
+
+// --- Event Listeners ---
 
 // Initialize score when the DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    console.log("DOMContentLoaded event fired for script.js"); // Add log
-    try {
-        initializeScore();
-    } catch (error) {
-        console.error("Error during initializeScore:", error); // Catch errors here
-    }
+    console.log("DOMContentLoaded event fired for script.js");
+    initializeScore();
 });
+
+// Terminate SCORM when the window is closed/unloaded
+window.addEventListener('beforeunload', terminateScorm);
+// Some LMSs might require unload instead of beforeunload
+// window.addEventListener('unload', terminateScorm);
+
+
+// --- Utility Functions ---
+// Ensure getRandomInt is available globally
+if (typeof window.getRandomInt === 'undefined') {
+    console.log("Defining window.getRandomInt...");
+    window.getRandomInt = (min, max) => {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    };
+    console.log("window.getRandomInt defined:", typeof window.getRandomInt);
+} else {
+     console.log("window.getRandomInt already defined.");
+}
 
 console.log("--- script.js execution finished ---");

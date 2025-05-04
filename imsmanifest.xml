@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest identifier="Nia-Multiplication-Adventure-SCO" version="1.2"
+          xmlns="http://www.imsproject.org/xsd/imscp_rootv1p1p2"
+          xmlns:adlcp="http://www.adlnet.org/xsd/adlcp_rootv1p2"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.imsproject.org/xsd/imscp_rootv1p1p2 imscp_rootv1p1p2.xsd
+                              http://www.adlnet.org/xsd/adlcp_rootv1p2 adlcp_rootv1p2.xsd">
+
+    <metadata>
+        <schema>ADL SCORM</schema>
+        <schemaversion>1.2</schemaversion>
+        <lom xmlns="http://www.imsglobal.org/xsd/imsmd_rootv1p2p1">
+            <general>
+                <title>
+                    <langstring xml:lang="en">Nia's Multiplication Adventure!</langstring>
+                </title>
+                <description>
+                    <langstring xml:lang="en">An interactive learning module for Class 4 multiplication concepts.</langstring>
+                </description>
+                <keyword>
+                    <langstring xml:lang="en">multiplication, math, class 4, interactive</langstring>
+                </keyword>
+            </general>
+            <lifeCycle>
+                <version>
+                    <langstring xml:lang="en">1.0</langstring>
+                </version>
+                <status>
+                    <source>
+                        <langstring xml:lang="x-none">LOMv1.0</langstring>
+                    </source>
+                    <value>
+                        <langstring xml:lang="x-none">Final</langstring>
+                    </value>
+                </status>
+            </lifeCycle>
+            <metaMetadata>
+                <metadataSchema>LOMv1.0</metadataSchema>
+            </metaMetadata>
+            <technical>
+                <format>text/html</format>
+                <location>.</location> <!-- Assuming files are relative to manifest -->
+            </technical>
+            <educational>
+                <learningResourceType>
+                    <source>
+                        <langstring xml:lang="x-none">LOMv1.0</langstring>
+                    </source>
+                    <value>
+                        <langstring xml:lang="x-none">Educational Objective</langstring>
+                    </value>
+                </learningResourceType>
+            </educational>
+            <rights>
+                <cost>
+                    <source>
+                        <langstring xml:lang="x-none">LOMv1.0</langstring>
+                    </source>
+                    <value>
+                        <langstring xml:lang="x-none">no</langstring>
+                    </value>
+                </cost>
+                <copyrightAndOtherRestrictions>
+                    <source>
+                        <langstring xml:lang="x-none">LOMv1.0</langstring>
+                    </source>
+                    <value>
+                        <langstring xml:lang="x-none">yes</langstring>
+                    </value>
+                </copyrightAndOtherRestrictions>
+            </rights>
+        </lom>
+    </metadata>
+
+    <organizations default="Nia-Multiplication-Org">
+        <organization identifier="Nia-Multiplication-Org">
+            <title>Nia's Multiplication Adventure!</title>
+            <item identifier="ITEM-1" identifierref="RES-1" isvisible="true">
+                <title>Nia's Multiplication Adventure!</title>
+                <!-- Optional: Add mastery score if needed -->
+                <!-- <adlcp:masteryscore>80</adlcp:masteryscore> -->
+            </item>
+        </organization>
+    </organizations>
+
+    <resources>
+        <resource identifier="RES-1" type="webcontent" adlcp:scormtype="sco" href="index.html">
+            <!-- List all files needed by the SCO -->
+            <file href="index.html"/>
+            <file href="css/style.css"/>
+            <file href="js/script.js"/>
+            <file href="js/SCORM_API_wrapper.js"/> <!-- SCORM Wrapper -->
+            <file href="pages/introduction.html"/>
+            <file href="pages/facts.html"/>
+            <file href="js/facts.js"/>
+            <file href="pages/properties.html"/>
+            <file href="js/properties.js"/>
+            <file href="pages/tens.html"/>
+            <file href="js/tens.js"/>
+            <file href="pages/2digit.html"/>
+            <file href="js/2digit.js"/>
+            <file href="pages/lattice.html"/>
+            <file href="js/lattice.js"/>
+            <file href="pages/problems.html"/>
+            <file href="js/problems.js"/>
+            <file href="pages/word-problems.html"/>
+            <file href="js/word-problems.js"/>
+            <file href="pages/shopping.html"/>
+            <file href="js/shopping.js"/>
+            <file href="pages/rewards.html"/>
+            <!-- Add any other assets like images if you have them -->
+        </resource>
+    </resources>
+</manifest>

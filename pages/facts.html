@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔢 Multiplication Facts - Nia's Multiplication Adventure!</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <!-- Add Favicon Link -->
+    <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="90" font-size="90">✨</text></svg>'>
+</head>
+<body>
+    <header>
+        <h1>✨ Nia's Multiplication Adventure! ✨</h1>
+        <!-- Add Score/Reward Display -->
+        <div style="text-align: center; color: white; font-size: 1.2em; margin-bottom: 10px;">
+            Score: <span id="current-score">0</span> 🏆 | <span id="reward-message"></span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="../index.html">🏠 Home</a></li>
+                <li><a href="introduction.html">🤔 What is Multiplication?</a></li>
+                <li><a href="facts.html">🔢 Multiplication Facts</a></li>
+                <li><a href="properties.html">🪄 Magic Rules (Properties)</a></li>
+                <li><a href="tens.html">🔟 Multiplying by 10s, 100s, 1000s</a></li>
+                <li><a href="2digit.html">✖️ Multiplying Bigger Numbers</a></li>
+                <li><a href="lattice.html">格子 Lattice Method</a></li>
+                <li><a href="problems.html">✏️ Practice Problems</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main id="content">
+        <h2>🔢 Multiplication Facts 🔢</h2>
+        <p>Multiplication facts are like small multiplication problems that are good to remember. They help us solve bigger problems faster!</p>
+        <p>Let's look at some examples from the book:</p>
+        <div class="example">
+            <ul>
+                <li>6 x 2 = 12</li>
+                <li>2 x 4 = 8</li>
+                <!-- Add more facts as needed -->
+            </ul>
+        </div>
+        <p>We will practice these with games and tables later!</p>
+        <!-- Add multiplication table grid or interactive elements here later -->
+
+        <p>Let's practice these with a game!</p>
+
+        <hr style="margin: 30px 0;">
+
+        <h3>⏱️ Times Table Challenge! ⏱️</h3>
+
+        <!-- Add instructions here -->
+        <div class="instructions" style="background-color: #e3f2fd; border: 1px solid #90caf9; padding: 10px; margin-bottom: 20px; border-radius: 5px;">
+            <h4>How to Play:</h4>
+            <ol>
+                <li>Look at the multiplication question (like <strong>3 x 4 = ?</strong>).</li>
+                <li>Type your answer in the box.</li>
+                <li>Click the "Check Answer" button (or press Enter).</li>
+                <li>If you're right on the first try, you get <strong>5 points!</strong> ✨</li>
+                <li>Click "New Question" to try another one!</li>
+            </ol>
+        </div>
+
+        <div id="game-facts-challenge" class="interactive-game" style="background-color: #fff9c4; border-color: #ffeb3b;"> <!-- Yellow theme -->
+            <p id="facts-problem-text" style="font-size: 2em; font-weight: bold; color: #f57f17; margin-bottom: 20px;">? x ? = ?</p>
+            <div class="game-section" style="background-color: #fffde7; border-color: #fff59d;">
+                <label for="facts-answer">Your Answer:</label>
+                <input type="number" id="facts-answer" class="answer-input" style="border-color: #ffc107;">
+            </div>
+            <button id="facts-check-button" class="game-button" style="background-color: #ffb300; margin-top: 15px;">Check Answer</button>
+            <!-- Add Hint Button -->
+            <button id="facts-hint-button" class="game-button" style="background-color: #4caf50; margin-top: 15px;">💡 Hint</button>
+            <button id="facts-new-problem-button" class="game-button" style="background-color: #ffa000; margin-top: 15px;">New Question</button>
+            <p id="facts-feedback" class="feedback-message"></p>
+            <!-- Add Hint Display Area -->
+            <p id="facts-hint-display" class="hint-message" style="min-height: 1.2em; color: #0d47a1; margin-top: 10px;"></p>
+        </div>
+
+        <hr style="margin: 40px 0;">
+
+        <h3>🧠 Memory Match! 🧠</h3>
+        <div class="instructions" style="background-color: #e1f5fe; border: 1px solid #81d4fa; padding: 10px; margin-bottom: 20px; border-radius: 5px;">
+             <h4>How to Play:</h4>
+             <ol>
+                 <li>Click on two cards to flip them over.</li>
+                 <li>One card has a question (like <strong>5 x 6</strong>), the other has the answer (like <strong>30</strong>).</li>
+                 <li>If the question and answer match, the cards stay flipped and you get <strong>10 points!</strong> 🎉</li>
+                 <li>If they don't match, they flip back over. Try to remember where they are!</li>
+                 <li>Match all the pairs to win!</li>
+             </ol>
+             <button id="memory-reset-button" class="game-button" style="background-color: #03a9f4;">Start / Reset Game</button>
+             <p>Moves: <span id="memory-moves">0</span></p>
+         </div>
+
+        <div id="memory-game-board" class="memory-board">
+            <!-- Cards will be generated here by JavaScript -->
+        </div>
+
+    </main>
+
+    <footer>
+        <p>🚀 Keep Practicing! 🚀</p>
+    </footer>
+
+    <!-- Load main script FIRST - Verify this path is correct -->
+    <script src="../js/script.js"></script>
+    <!-- Load page-specific script SECOND - Verify this path is correct -->
+    <script src="../js/facts.js"></script>
+</body>
+</html>

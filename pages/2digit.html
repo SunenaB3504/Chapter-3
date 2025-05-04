@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>✖️ Multiplying Bigger Numbers - Nia's Multiplication Adventure!</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <!-- Add Favicon Link -->
+    <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="90" font-size="90">✨</text></svg>'>
+    <style>
+        /* Add specific styles for this game */
+        .multiplication-problem {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1.5em;
+            line-height: 1.2;
+            text-align: right;
+            width: 150px; /* Adjust as needed */
+            margin: 10px auto;
+            position: relative;
+        }
+        .multiplication-problem .line {
+            border-bottom: 2px solid black;
+            display: block;
+        }
+        .multiplication-problem .operator {
+            position: absolute;
+            left: -25px; /* Adjust as needed */
+            bottom: 0;
+        }
+        .step-input {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1.5em;
+            text-align: right;
+            border: 1px dashed #ccc;
+            padding: 2px 5px;
+            width: 140px; /* Match problem width */
+            margin: 5px auto;
+            display: block;
+            background-color: #f0f9ff;
+        }
+        .hint-controls button { margin: 0 5px; }
+        .hint-area {
+            background-color: #fffde7;
+            border: 1px dashed #fff59d;
+            padding: 10px;
+            margin-top: 15px;
+            min-height: 40px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>✨ Nia's Multiplication Adventure! ✨</h1>
+        <!-- Add Score/Reward Display -->
+        <div style="text-align: center; color: white; font-size: 1.2em; margin-bottom: 10px;">
+            Score: <span id="current-score">0</span> 🏆 | <span id="reward-message"></span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="../index.html">🏠 Home</a></li>
+                <li><a href="introduction.html">🤔 What is Multiplication?</a></li>
+                <li><a href="facts.html">🔢 Multiplication Facts</a></li>
+                <li><a href="properties.html">🪄 Magic Rules (Properties)</a></li>
+                <li><a href="tens.html">🔟 Multiplying by 10s, 100s, 1000s</a></li>
+                <li><a href="2digit.html">✖️ Multiplying Bigger Numbers</a></li>
+                <li><a href="lattice.html">格子 Lattice Method</a></li>
+                <li><a href="problems.html">✏️ Practice Problems</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main id="content">
+        <h2>✖️ Multiplying Bigger Numbers (Like 42 x 36) ✖️</h2>
+        <p>Now let's learn how to multiply numbers that have two or more digits!</p>
+        <p>We'll use the example: <strong>42 x 36</strong></p>
+
+        <div class="example">
+            <h3>Step 1: Multiply by the Ones Digit</h3>
+            <p>First, multiply the top number (42) by the ones digit of the bottom number (which is 6).</p>
+            <p>Think: <strong>42 x 6</strong></p>
+            <pre>
+   42
+ x 36
+ ----
+  252  <-- (This is 42 x 6)
+            </pre>
+            <p>(How we got 252: 6 x 2 = 12. Write down 2, carry over 1. Then 6 x 4 = 24. Add the carried-over 1 to get 25. Write down 25.)</p>
+
+            <h3>Step 2: Multiply by the Tens Digit</h3>
+            <p>Next, multiply the top number (42) by the tens digit of the bottom number (which is 3, but it really means 30).</p>
+            <p>Think: <strong>42 x 30</strong></p>
+            <p>To do this, first put a <strong>zero</strong> in the ones place on the next line (because we are multiplying by tens).</p>
+            <p>Then, multiply 42 by 3.</p>
+             <pre>
+   42
+ x 36
+ ----
+  252
+ 126<span style="color:red; font-weight:bold;">0</span> <-- (This is 42 x 30)
+            </pre>
+             <p>(How we got 1260: Put down the 0. Then 3 x 2 = 6. Write down 6. Then 3 x 4 = 12. Write down 12.)</p>
+
+            <h3>Step 3: Add the Products</h3>
+            <p>Finally, add the results from Step 1 and Step 2 together.</p>
+             <pre>
+   42
+ x 36
+ ----
+  252  <-- (42 x 6)
++1260  <-- (42 x 30)
+ ----
+ 1512  <-- (The final answer!)
+            </pre>
+        </div>
+
+        <p>So, <strong>42 x 36 = 1512</strong>.</p>
+
+        <p>Let's try another one: <strong>1325 x 24</strong></p>
+         <div class="example">
+            <h3>Step 1: Multiply by Ones (4)</h3>
+             <pre>
+  1325
+x   24
+------
+  5300 <-- (1325 x 4)
+            </pre>
+            <h3>Step 2: Multiply by Tens (20)</h3>
+             <pre>
+  1325
+x   24
+------
+  5300
+ 2650<span style="color:red; font-weight:bold;">0</span> <-- (1325 x 20)
+            </pre>
+             <h3>Step 3: Add</h3>
+             <pre>
+  1325
+x   24
+------
+  5300
++26500
+------
+ 31800 <-- (The final answer!)
+            </pre>
+        </div>
+        <p>So, <strong>1325 x 24 = 31800</strong>.</p>
+
+        <hr style="margin: 30px 0;">
+
+        <h3>🧩 Step-by-Step Practice 🧩</h3>
+        <div id="game-2digit" class="interactive-game" style="background-color: #e3f2fd; border-color: #90caf9;">
+            <div class="multiplication-problem">
+                <span id="problem-num1">??</span><br>
+                <span class="operator">x</span><span id="problem-num2">??</span>
+                <span class="line"></span>
+            </div>
+
+            <label for="step1-answer">Step 1 (<span id="step1-label">?</span> x Ones):</label>
+            <input type="number" id="step1-answer" class="step-input" placeholder="Result 1">
+
+            <label for="step2-answer">Step 2 (<span id="step2-label">?</span> x Tens):</label>
+            <input type="number" id="step2-answer" class="step-input" placeholder="Result 2 (with 0)">
+
+            <label for="final-answer">Step 3 (Add Results):</label>
+            <input type="number" id="final-answer" class="step-input" placeholder="Final Answer">
+
+            <div style="margin-top: 20px;">
+                <button id="check-2digit-button" class="game-button" style="background-color: #1976d2;">Check Answer</button>
+                <button id="new-2digit-button" class="game-button" style="background-color: #0d47a1;">New Problem</button>
+            </div>
+            <p id="feedback-2digit" class="feedback-message"></p>
+
+            <!-- Hint Section -->
+            <div class="hint-controls" style="margin-top: 20px;">
+                 <button id="show-hint-button" class="game-button" style="background-color: #4caf50;">💡 Show Hint</button>
+                 <button id="prev-hint-button" class="game-button" style="background-color: #ff9800; display: none;">&lt; Prev Step</button>
+                 <button id="next-hint-button" class="game-button" style="background-color: #ff9800; display: none;">Next Step &gt;</button>
+            </div>
+            <div id="hint-area" class="hint-area" style="display: none;">
+                <p id="hint-text">Hint will appear here.</p>
+            </div>
+        </div>
+
+    </main>
+
+    <footer>
+        <p>🚀 Keep Practicing! 🚀</p>
+    </footer>
+
+    <!-- Load main script FIRST -->
+    <script src="../js/script.js"></script>
+    <!-- Load page-specific script -->
+    <script src="../js/2digit.js"></script>
+</body>
+</html>

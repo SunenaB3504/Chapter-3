@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Practice Problems - Nia's Multiplication Adventure!</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <!-- Add Favicon Link -->
+    <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="90" font-size="90">✨</text></svg>'>
+</head>
+<body>
+    <header>
+        <h1>✨ Nia's Multiplication Adventure! ✨</h1>
+        <!-- Add Score/Reward Display -->
+        <div style="text-align: center; color: white; font-size: 1.2em; margin-bottom: 10px;">
+            Score: <span id="current-score">0</span> 🏆 | <span id="reward-message"></span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="../index.html">🏠 Home</a></li>
+                <li><a href="introduction.html">🤔 What is Multiplication?</a></li>
+                <li><a href="facts.html">🔢 Multiplication Facts</a></li>
+                <li><a href="properties.html">🪄 Magic Rules (Properties)</a></li>
+                <li><a href="tens.html">🔟 Multiplying by 10s, 100s, 1000s</a></li>
+                <li><a href="2digit.html">✖️ Multiplying Bigger Numbers</a></li>
+                <li><a href="lattice.html">格子 Lattice Method</a></li>
+                <li><a href="problems.html">✏️ Practice Problems</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main id="content">
+        <h2>✏️ Practice Problems (Let's Solve!) ✏️</h2>
+        <p>You've learned so much about multiplication! Now it's time to put your skills to the test.</p>
+        <p>This section mixes different kinds of multiplication problems together, just like you might see in class or in real life. Remember all the rules and methods you've learned:</p>
+        <ul>
+            <li>Basic multiplication facts</li>
+            <li>Multiplying by 10, 100, and 1000</li>
+            <li>Multiplying by multiples of 10 (like 20, 300)</li>
+            <li>Multiplying bigger numbers (using the standard method or lattice)</li>
+        </ul>
+        <p>Don't worry if you don't get it right away. The most important thing is to practice and learn from your mistakes. Ready? Let's go!</p>
+
+        <hr style="margin: 30px 0;">
+
+        <h3>🎯 Mixed Practice Challenge 🎯</h3>
+        <div id="game-practice-mix" class="interactive-game" style="background-color: #f3e5f5; border-color: #ce93d8;">
+            <p id="practice-problem-text" style="font-size: 1.8em; font-weight: bold; color: #6a1b9a; margin-bottom: 20px;">? x ? = ?</p>
+            <div class="game-section" style="background-color: #f3e5f5; border-color: #e1bee7;">
+                <label for="practice-answer">Your Answer:</label>
+                <input type="number" id="practice-answer" class="answer-input" style="border-color: #ba68c8;">
+            </div>
+            <button id="practice-check-button" class="game-button" style="background-color: #9c27b0; margin-top: 15px;">Check Answer</button>
+            <button id="practice-new-problem-button" class="game-button" style="background-color: #7b1fa2; margin-top: 15px;">New Question</button>
+            <p id="practice-feedback" class="feedback-message"></p>
+            <!-- Optional Hint Area (Could show which method might be best) -->
+            <!-- <p id="practice-hint-display" class="hint-message" style="min-height: 1.2em; color: #4a148c; margin-top: 10px;"></p> -->
+        </div>
+
+    </main>
+
+    <footer>
+        <p>🚀 Keep Practicing! 🚀</p>
+    </footer>
+
+    <!-- Load main script FIRST -->
+    <script src="../js/script.js"></script>
+    <!-- Load page-specific script -->
+    <script src="../js/problems.js"></script>
+</body>
+</html>

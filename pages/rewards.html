@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Score & Rewards! - Nia's Multiplication Adventure!</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <!-- Add Favicon Link -->
+    <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="90" font-size="90">✨</text></svg>'>
+    <style>
+        /* Optional: Add specific styles for the rewards page */
+        .reward-list {
+            list-style: none;
+            padding: 0;
+        }
+        .reward-list li {
+            background-color: #f3e5f5; /* Light purple */
+            margin-bottom: 10px;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 5px solid #ab47bc; /* Purple */
+            font-size: 1.1em;
+        }
+         .reward-list li.achieved {
+             border-left-color: #4caf50; /* Green for achieved */
+             background-color: #e8f5e9; /* Light green */
+             font-weight: bold;
+         }
+        .reward-list .points {
+            font-weight: bold;
+            color: #7b1fa2; /* Darker purple */
+        }
+         .reward-list .achieved .points {
+             color: #2e7d32; /* Darker green */
+         }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>✨ Nia's Multiplication Adventure! ✨</h1>
+         <!-- Ensure Score/Reward Display is present -->
+         <div style="text-align: center; color: white; font-size: 1.2em; margin-bottom: 10px;">
+            Score: <span id="current-score">0</span> 🏆 | <span id="reward-message"></span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="../index.html">🏠 Home</a></li>
+                <li><a href="introduction.html">🤔 What is Multiplication?</a></li>
+                <li><a href="facts.html">🔢 Multiplication Facts</a></li>
+                <li><a href="properties.html">🪄 Magic Rules (Properties)</a></li>
+                <li><a href="tens.html">🔟 Multiplying by 10s, 100s, 1000s</a></li>
+                <li><a href="2digit.html">✖️ Multiplying Bigger Numbers</a></li>
+                <li><a href="lattice.html">格子 Lattice Method</a></li>
+                <li><a href="problems.html">✏️ Practice Problems</a></li>
+                <li><a href="rewards.html">🏆 Score & Rewards</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main id="content">
+        <h2>🏆 Your Score & Rewards! 🏆</h2>
+
+        <div class="example" style="text-align: center;">
+            <p>Your Current Score:</p>
+            <p style="font-size: 2.5em; font-weight: bold; color: #7b1fa2;" id="rewards-page-score">0</p>
+        </div>
+
+        <h3>🌟 Reward Milestones 🌟</h3>
+        <ul class="reward-list" id="rewards-list-details">
+            <li data-score="5">Reach <span class="points">5 Points</span> for a Good Start! ✨ <span class="trade-button-placeholder"></span></li>
+            <li data-score="20">Reach <span class="points">20 Points</span> - You're learning fast! 👍 <span class="trade-button-placeholder"></span></li>
+            <li data-score="50">Reach <span class="points">50 Points</span> - Great Job! Keep it up! 🎉 <span class="trade-button-placeholder"></span></li>
+            <li data-score="100">Reach <span class="points">100 Points</span> - Multiplication Master! 🌟 <span class="trade-button-placeholder"></span></li>
+            <li data-score="500">Reach <span class="points">500 Points</span> - CANDY Reward! 🍬 <span class="trade-button-placeholder"></span></li>
+            <li data-score="1000">Reach <span class="points">1000 Points</span> - ICE CREAM Reward! 🍦 <span class="trade-button-placeholder"></span></li>
+            <li data-score="2000">Reach <span class="points">2000 Points</span> - BURGER Reward! 🍔 <span class="trade-button-placeholder"></span></li>
+            <li data-score="3000">Reach <span class="points">3000 Points</span> - Fried CHICKEN Reward! 🍗 <span class="trade-button-placeholder"></span></li>
+            <li data-score="4000">Reach <span class="points">4000 Points</span> - PIZZA Reward! 🍕 <span class="trade-button-placeholder"></span></li>
+            <li data-score="5000">Reach <span class="points">5000 Points</span> - New BOOK Reward! 📚 <span class="trade-button-placeholder"></span></li>
+            <li data-score="10000">Reach <span class="points">10000 Points</span> - TOY Reward! 🧸 <span class="trade-button-placeholder"></span></li>
+            <!-- Add more rewards here if needed -->
+        </ul>
+
+    </main>
+
+    <footer>
+        <p>🚀 Keep Practicing! 🚀</p>
+    </footer>
+
+    <!-- Load main script FIRST -->
+    <script src="../js/script.js"></script>
+    <!-- Load page-specific script -->
+    <script src="../js/rewards.js"></script>
+</body>
+</html>

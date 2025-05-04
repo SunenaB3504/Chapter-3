@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🛒 Shopping Math - Nia's Multiplication Adventure!</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <!-- Add Favicon Link -->
+    <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="90" font-size="90">✨</text></svg>'>
+</head>
+<body>
+    <header>
+        <h1>✨ Nia's Multiplication Adventure! ✨</h1>
+        <!-- Add Score/Reward Display -->
+        <div style="text-align: center; color: white; font-size: 1.2em; margin-bottom: 10px;">
+            Score: <span id="current-score">0</span> 🏆 | <span id="reward-message"></span>
+        </div>
+        <nav>
+             <ul>
+                <li><a href="../index.html">🏠 Home</a></li>
+                <li><a href="introduction.html">🤔 What is Multiplication?</a></li>
+                <li><a href="facts.html">🔢 Multiplication Facts</a></li>
+                <li><a href="properties.html">🪄 Magic Rules (Properties)</a></li>
+                <li><a href="tens.html">🔟 Multiplying by 10s, 100s, 1000s</a></li>
+                <li><a href="2digit.html">✖️ Multiplying Bigger Numbers</a></li>
+                <li><a href="lattice.html">格子 Lattice Method</a></li>
+                <li><a href="problems.html">✏️ Practice Problems</a></li>
+                <li><a href="word-problems.html">📖 Word Problems</a></li>
+                <li><a href="shopping.html">🛒 Shopping Math</a></li> <!-- Added Link -->
+                <li><a href="rewards.html">🏆 Score & Rewards</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main id="content">
+        <h2>🛒 Shopping Math (Real Life!) 🛒</h2>
+        <p>Let's go shopping with Nia! We'll use multiplication, addition, and subtraction to solve problems about buying things.</p>
+        <p>Read the story, figure out the steps, and calculate the answer. Remember what you learned about adding and subtracting too!</p>
+
+        <hr style="margin: 30px 0;">
+
+        <h3>🛍️ Shopping Challenge 🛍️</h3>
+        <div id="game-shopping" class="interactive-game" style="background-color: #e1f5fe; border-color: #81d4fa;">
+            <p id="shopping-problem-text" style="font-size: 1.3em; line-height: 1.6; color: #0277bd; margin-bottom: 20px; text-align: left; padding: 10px; border: 1px dashed #4fc3f7; border-radius: 5px;">Shopping story will appear here...</p>
+            <div class="game-section" style="background-color: #e3f2fd; border-color: #90caf9;">
+                <!-- Changed label to Rupee symbol -->
+                <label for="shopping-answer">Your Answer (₹):</label>
+                <input type="number" id="shopping-answer" class="answer-input" style="border-color: #42a5f5;" step="1"> <!-- Step 1 for whole rupees, adjust if needed -->
+            </div>
+            <button id="shopping-check-button" class="game-button" style="background-color: #039be5; margin-top: 15px;">Check Answer</button>
+            <button id="shopping-hint-button" class="game-button" style="background-color: #ffb300; margin-top: 15px;">💡 Hint</button>
+            <button id="shopping-new-problem-button" class="game-button" style="background-color: #0288d1; margin-top: 15px;">New Story</button>
+            <p id="shopping-feedback" class="feedback-message"></p>
+            <p id="shopping-hint-display" class="hint-message" style="min-height: 1.2em; color: #01579b; margin-top: 10px;"></p>
+        </div>
+
+    </main>
+
+    <footer>
+        <p>🚀 Keep Practicing! 🚀</p>
+    </footer>
+
+    <!-- Load main script FIRST -->
+    <script src="../js/script.js"></script>
+    <!-- Load page-specific script -->
+    <script src="../js/shopping.js"></script>
+</body>
+</html>

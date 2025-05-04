@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🪄 Magic Rules (Properties) - Nia's Multiplication Adventure!</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <!-- Add Favicon Link -->
+    <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="90" font-size="90">✨</text></svg>'>
+</head>
+<body>
+    <header>
+        <h1>✨ Nia's Multiplication Adventure! ✨</h1>
+        <!-- Add Score/Reward Display -->
+        <div style="text-align: center; color: white; font-size: 1.2em; margin-bottom: 10px;">
+            Score: <span id="current-score">0</span> 🏆 | <span id="reward-message"></span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="../index.html">🏠 Home</a></li>
+                <li><a href="introduction.html">🤔 What is Multiplication?</a></li>
+                <li><a href="facts.html">🔢 Multiplication Facts</a></li>
+                <li><a href="properties.html">🪄 Magic Rules (Properties)</a></li>
+                <li><a href="tens.html">🔟 Multiplying by 10s, 100s, 1000s</a></li>
+                <li><a href="2digit.html">✖️ Multiplying Bigger Numbers</a></li>
+                <li><a href="lattice.html">格子 Lattice Method</a></li>
+                <li><a href="problems.html">✏️ Practice Problems</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main id="content">
+        <h2>🪄 Magic Rules (Properties of Multiplication) 🪄</h2>
+        <p>Multiplication has some cool rules that make it easier!</p>
+
+        <h3>Rule 1: Order Doesn't Matter (Commutative Property)</h3>
+        <p>Multiplying numbers in any order gives the same answer.</p>
+        <div class="example">
+            <p>5 x 64 is the same as 64 x 5.</p>
+            <p>2 x 3 = 6 and 3 x 2 = 6</p>
+        </div>
+        <!-- Commutative Game -->
+        <div id="game-commutative" class="interactive-game" style="background-color: #ffebee; border-color: #e57373;">
+            <h4>Try it!</h4>
+            <p>If <strong id="comm-eq1-lhs">? x ?</strong> = <strong id="comm-eq1-rhs">?</strong>,</p>
+            <p>then <strong id="comm-eq2-lhs">? x ?</strong> = ?</p>
+            <label for="comm-answer">Your Answer:</label>
+            <input type="number" id="comm-answer" class="answer-input" style="border-color: #ef9a9a;">
+            <button id="comm-check-button" class="game-button" style="background-color: #f44336;">Check</button>
+            <button id="comm-new-button" class="game-button" style="background-color: #e53935;">New</button>
+            <p id="comm-feedback" class="feedback-message"></p>
+        </div>
+
+        <h3>Rule 2: Grouping Doesn't Matter (Associative Property)</h3>
+        <p>When multiplying three or more numbers, you can group them differently, and the answer stays the same.</p>
+        <div class="example">
+            <p>(6 x 5) x 130 is the same as 6 x (5 x 130).</p>
+            <p>(2 x 3) x 4 = 6 x 4 = 24</p>
+            <p>2 x (3 x 4) = 2 x 12 = 24</p>
+        </div>
+        <!-- Associative Game -->
+        <div id="game-associative" class="interactive-game" style="background-color: #e8eaf6; border-color: #9fa8da;">
+             <h4>Try it!</h4>
+             <p>Calculate both sides:</p>
+             <div style="margin-bottom: 10px;">
+                 (<strong id="assoc-a1">?</strong> x <strong id="assoc-b1">?</strong>) x <strong id="assoc-c1">?</strong> =
+                 <input type="number" id="assoc-answer1" class="answer-input" style="border-color: #7986cb; width: 60px;">
+             </div>
+             <div>
+                 <strong id="assoc-a2">?</strong> x (<strong id="assoc-b2">?</strong> x <strong id="assoc-c2">?</strong>) =
+                 <input type="number" id="assoc-answer2" class="answer-input" style="border-color: #7986cb; width: 60px;">
+             </div>
+             <button id="assoc-check-button" class="game-button" style="background-color: #3f51b5;">Check</button>
+             <button id="assoc-new-button" class="game-button" style="background-color: #303f9f;">New</button>
+             <p id="assoc-feedback" class="feedback-message"></p>
+        </div>
+
+
+        <h3>Rule 3: The Magic of Zero</h3>
+        <p>Any number multiplied by <strong>Zero</strong> is always <strong>Zero</strong>.</p>
+        <div class="example">
+            <p>185 x 0 = 0</p>
+            <p>8463 x 25 x 0 = 0</p>
+            <p>0 x 100 = 0</p>
+        </div>
+        <!-- Zero Property Game -->
+        <div id="game-zero" class="interactive-game" style="background-color: #fce4ec; border-color: #f06292;">
+            <h4>Try it!</h4>
+            <p><strong id="zero-num">?</strong> x 0 = ?</p>
+            <label for="zero-answer">Your Answer:</label>
+            <input type="number" id="zero-answer" class="answer-input" style="border-color: #ec407a;">
+            <button id="zero-check-button" class="game-button" style="background-color: #e91e63;">Check</button>
+            <button id="zero-new-button" class="game-button" style="background-color: #c2185b;">New</button>
+            <p id="zero-feedback" class="feedback-message"></p>
+        </div>
+
+        <h3>Rule 4: The Magic of One</h3>
+        <p>Any number multiplied by <strong>One</strong> is always that same number.</p>
+        <div class="example">
+            <p>487 x 1 = 487</p>
+            <p>1 x 9318 = 9318</p>
+            <p>6354 x 1 = 6354</p>
+        </div>
+        <!-- Identity Property Game -->
+        <div id="game-identity" class="interactive-game" style="background-color: #f1f8e9; border-color: #aed581;">
+            <h4>Try it!</h4>
+            <p><strong id="identity-num">?</strong> x 1 = ?</p>
+            <label for="identity-answer">Your Answer:</label>
+            <input type="number" id="identity-answer" class="answer-input" style="border-color: #9ccc65;">
+            <button id="identity-check-button" class="game-button" style="background-color: #8bc34a;">Check</button>
+            <button id="identity-new-button" class="game-button" style="background-color: #689f38;">New</button>
+            <p id="identity-feedback" class="feedback-message"></p>
+        </div>
+
+    </main>
+
+    <footer>
+        <p>🚀 Keep Practicing! 🚀</p>
+    </footer>
+
+    <!-- Load main script FIRST -->
+    <script src="../js/script.js"></script>
+    <!-- Load page-specific script -->
+    <script src="../js/properties.js"></script>
+</body>
+</html>

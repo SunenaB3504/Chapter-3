@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔟 Multiplying by 10s, 100s, 1000s - Nia's Multiplication Adventure!</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <!-- Add Favicon Link -->
+    <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="90" font-size="90">✨</text></svg>'>
+</head>
+<body>
+    <header>
+        <h1>✨ Nia's Multiplication Adventure! ✨</h1>
+        <!-- Add Score/Reward Display -->
+        <div style="text-align: center; color: white; font-size: 1.2em; margin-bottom: 10px;">
+            Score: <span id="current-score">0</span> 🏆 | <span id="reward-message"></span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="../index.html">🏠 Home</a></li>
+                <li><a href="introduction.html">🤔 What is Multiplication?</a></li>
+                <li><a href="facts.html">🔢 Multiplication Facts</a></li>
+                <li><a href="properties.html">🪄 Magic Rules (Properties)</a></li>
+                <li><a href="tens.html">🔟 Multiplying by 10s, 100s, 1000s</a></li>
+                <li><a href="2digit.html">✖️ Multiplying Bigger Numbers</a></li>
+                <li><a href="lattice.html">格子 Lattice Method</a></li>
+                <li><a href="problems.html">✏️ Practice Problems</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main id="content">
+        <h2>🔟 Multiplying by 10s, 100s, and 1000s (Easy Peasy!) 🔟</h2>
+        <p>Multiplying by numbers like 10, 100, or 1000 is super easy! It's like adding zeros.</p>
+
+        <h3>Multiplying by 10</h3>
+        <p>To multiply a number by <strong>10</strong>, just put <strong>one zero</strong> (0) at the end of the number.</p>
+        <div class="example">
+            <p>7 x 10 = 7<span style="color:red; font-weight:bold;">0</span></p>
+            <p>94 x 10 = 94<span style="color:red; font-weight:bold;">0</span></p>
+            <p>185 x 10 = 185<span style="color:red; font-weight:bold;">0</span></p>
+            <p>30 x 10 = 30<span style="color:red; font-weight:bold;">0</span></p>
+        </div>
+        <!-- Game for x10 -->
+        <div id="game-tens-10" class="interactive-game" style="background-color: #e0f2f1; border-color: #80cbc4;">
+            <h4>Try it! (x 10)</h4>
+            <p><strong id="tens10-num">?</strong> x 10 = ?</p>
+            <label for="tens10-answer">Your Answer:</label>
+            <input type="number" id="tens10-answer" class="answer-input" style="border-color: #4db6ac;">
+            <button id="tens10-check-button" class="game-button" style="background-color: #26a69a;">Check</button>
+            <button id="tens10-new-button" class="game-button" style="background-color: #00897b;">New</button>
+            <p id="tens10-feedback" class="feedback-message"></p>
+        </div>
+
+        <h3>Multiplying by 100</h3>
+        <p>To multiply a number by <strong>100</strong>, just put <strong>two zeros</strong> (00) at the end of the number.</p>
+        <div class="example">
+            <p>5 x 100 = 5<span style="color:red; font-weight:bold;">00</span></p>
+            <p>4 x 100 = 4<span style="color:red; font-weight:bold;">00</span></p>
+            <p>23 x 100 = 23<span style="color:red; font-weight:bold;">00</span></p>
+            <p>307 x 100 = 307<span style="color:red; font-weight:bold;">00</span></p>
+            <p>60 x 100 = 60<span style="color:red; font-weight:bold;">00</span></p>
+        </div>
+        <!-- Game for x100 -->
+        <div id="game-tens-100" class="interactive-game" style="background-color: #e0f2f1; border-color: #80cbc4;">
+            <h4>Try it! (x 100)</h4>
+            <p><strong id="tens100-num">?</strong> x 100 = ?</p>
+            <label for="tens100-answer">Your Answer:</label>
+            <input type="number" id="tens100-answer" class="answer-input" style="border-color: #4db6ac;">
+            <button id="tens100-check-button" class="game-button" style="background-color: #26a69a;">Check</button>
+            <button id="tens100-new-button" class="game-button" style="background-color: #00897b;">New</button>
+            <p id="tens100-feedback" class="feedback-message"></p>
+        </div>
+
+        <h3>Multiplying by 1000</h3>
+        <p>To multiply a number by <strong>1000</strong>, just put <strong>three zeros</strong> (000) at the end of the number.</p>
+        <div class="example">
+            <p>88 x 1000 = 88<span style="color:red; font-weight:bold;">000</span></p>
+            <p>80 x 1000 = 80<span style="color:red; font-weight:bold;">000</span></p>
+            <!-- Add more examples if needed -->
+        </div>
+        <!-- Game for x1000 -->
+        <div id="game-tens-1000" class="interactive-game" style="background-color: #e0f2f1; border-color: #80cbc4;">
+            <h4>Try it! (x 1000)</h4>
+            <p><strong id="tens1000-num">?</strong> x 1000 = ?</p>
+            <label for="tens1000-answer">Your Answer:</label>
+            <input type="number" id="tens1000-answer" class="answer-input" style="border-color: #4db6ac;">
+            <button id="tens1000-check-button" class="game-button" style="background-color: #26a69a;">Check</button>
+            <button id="tens1000-new-button" class="game-button" style="background-color: #00897b;">New</button>
+            <p id="tens1000-feedback" class="feedback-message"></p>
+        </div>
+
+        <h3>What about numbers like 20, 300, or 4000?</h3>
+        <p>It's almost the same! Multiply the numbers without the zeros first, then add the total number of zeros from both numbers at the end.</p>
+        <div class="example">
+            <p><strong>11 x 20</strong>:</p>
+            <p>First do 11 x 2 = 22.</p>
+            <p>There is one zero in 20.</p>
+            <p>So, 11 x 20 = 22<span style="color:red; font-weight:bold;">0</span>.</p>
+
+            <p><strong>12 x 300</strong>:</p>
+            <p>First do 12 x 3 = 36.</p>
+            <p>There are two zeros in 300.</p>
+            <p>So, 12 x 300 = 36<span style="color:red; font-weight:bold;">00</span>.</p>
+
+            <p><strong>25 x 3000</strong>:</p>
+            <p>First do 25 x 3 = 75.</p>
+            <p>There are three zeros in 3000.</p>
+            <p>So, 25 x 3000 = 75<span style="color:red; font-weight:bold;">000</span>.</p>
+
+             <p><strong>50 x 4000</strong>:</p>
+            <p>First do 5 x 4 = 20.</p>
+            <p>There is one zero in 50 and three zeros in 4000 (total four zeros).</p>
+            <p>So, 50 x 4000 = 20<span style="color:red; font-weight:bold;">0000</span> (which is 200,000).</p>
+        </div>
+        <!-- Game for Multiples -->
+        <div id="game-tens-multiples" class="interactive-game" style="background-color: #e0f2f1; border-color: #80cbc4;">
+            <h4>Try it! (Multiples)</h4>
+            <p><strong id="tensM-num1">?</strong> x <strong id="tensM-num2">?</strong> = ?</p>
+            <label for="tensM-answer">Your Answer:</label>
+            <input type="number" id="tensM-answer" class="answer-input" style="border-color: #4db6ac;">
+            <button id="tensM-check-button" class="game-button" style="background-color: #26a69a;">Check</button>
+            <!-- Add Hint Button -->
+            <button id="tensM-hint-button" class="game-button" style="background-color: #4caf50;">💡 Hint</button>
+            <button id="tensM-new-button" class="game-button" style="background-color: #00897b;">New</button>
+            <p id="tensM-feedback" class="feedback-message"></p>
+            <!-- Add Hint Display Area -->
+            <p id="tensM-hint-display" class="hint-message" style="min-height: 1.2em; color: #0d47a1; margin-top: 10px;"></p>
+        </div>
+
+    </main>
+
+    <footer>
+        <p>🚀 Keep Practicing! 🚀</p>
+    </footer>
+
+    <!-- Load main script FIRST -->
+    <script src="../js/script.js"></script>
+    <!-- Load page-specific script -->
+    <script src="../js/tens.js"></script>
+</body>
+</html>

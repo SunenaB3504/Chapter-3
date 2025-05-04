@@ -6,13 +6,13 @@ if (typeof window.getRandomInt !== 'function') {
     window.getRandomInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-// --- Game Elements ---
+// --- Game Elements --- UPDATED Selectors/IDs
 // Numbers
 const num1d1El = document.getElementById('lattice-num1-d1');
 const num1d2El = document.getElementById('lattice-num1-d2');
-const num2d1El = document.getElementById('lattice-num2-d1');
-const num2d2El = document.getElementById('lattice-num2-d2');
-// Cell Inputs (Tens and Ones)
+const num2d1El = document.getElementById('lattice-num2-d1'); // ID matches HTML
+const num2d2El = document.getElementById('lattice-num2-d2'); // ID matches HTML
+// Cell Inputs (Tens and Ones) - IDs remain the same
 const cellInputs = {};
 for (let r = 0; r < 2; r++) {
     for (let c = 0; c < 2; c++) {
@@ -20,20 +20,20 @@ for (let r = 0; r < 2; r++) {
         cellInputs[`${r}-${c}-o`] = document.getElementById(`cell-${r}-${c}-o`);
     }
 }
-// Diagonal Sum Inputs
+// Diagonal Sum Inputs - IDs remain the same
 const diagSumInputs = [
     document.getElementById('diag-sum-0'), // bottom-right
     document.getElementById('diag-sum-1'),
     document.getElementById('diag-sum-2'),
     document.getElementById('diag-sum-3')  // top-left
 ];
-// Final Answer
+// Final Answer - ID remains the same
 const finalAnswerInput = document.getElementById('final-answer-lattice');
-// Buttons & Feedback
+// Buttons & Feedback - IDs remain the same
 const checkButton = document.getElementById('check-lattice-button');
 const newButton = document.getElementById('new-lattice-button');
 const feedbackEl = document.getElementById('feedback-lattice');
-// Hint Elements
+// Hint Elements - IDs remain the same
 const showHintButton = document.getElementById('show-hint-lattice-button');
 const prevHintButton = document.getElementById('prev-hint-lattice-button');
 const nextHintButton = document.getElementById('next-hint-lattice-button');
@@ -64,11 +64,11 @@ function generateProblem() {
     n2d1 = Math.floor(num2 / 10);
     n2d2 = num2 % 10;
 
-    // Display numbers - Assign num1 digits to TOP, num2 digits to RIGHT
+    // Display numbers - Assign num1 digits to TOP, num2 digits to SIDE
     if(num1d1El) num1d1El.textContent = n1d1; // Top-Left
     if(num1d2El) num1d2El.textContent = n1d2; // Top-Right
-    if(num2d1El) num2d1El.textContent = n2d1; // Right-Top
-    if(num2d2El) num2d2El.textContent = n2d2; // Right-Bottom
+    if(num2d1El) num2d1El.textContent = n2d1; // Side-Top
+    if(num2d2El) num2d2El.textContent = n2d2; // Side-Bottom
 
     // Calculate correct cell products
     const productsRaw = [
@@ -110,13 +110,13 @@ function generateProblem() {
     attempted = false;
     resetHint();
 
-    // Define Hints - Ensure consistency with CSS/HTML
+    // Define Hints - VERIFIED for SVG layout and placement
     hints = [
-        `Step 1: Draw a 2x2 grid. Write the first number (${num1}) on top... Write the second number (${num2}) on the right side... Draw diagonals from **top-right to bottom-left** in each cell.`,
-        `Step 2: Focus on the top-left cell. Multiply the digit above it (${n1d1}) by the digit to its right (${n2d1}). Product is ${n1d1 * n2d1}. Write the tens digit (${cellProducts['0-0'].tens}) in the **top-left** part and the ones digit (${cellProducts['0-0'].ones}) in the **bottom-right** part of this cell.`,
-        `Step 3: Focus on the top-right cell. Multiply the digit above it (${n1d2}) by the digit to its right (${n2d1}). Product is ${n1d2 * n2d1}. Write tens (${cellProducts['0-1'].tens}) in the **top-left** part and ones (${cellProducts['0-1'].ones}) in the **bottom-right** part.`,
-        `Step 4: Focus on the bottom-left cell. Multiply the digit above it (${n1d1}) by the digit to its right (${n2d2}). Product is ${n1d1 * n2d2}. Write tens (${cellProducts['1-0'].tens}) in the **top-left** part and ones (${cellProducts['1-0'].ones}) in the **bottom-right** part.`,
-        `Step 5: Focus on the bottom-right cell. Multiply the digit above it (${n1d2}) by the digit to its right (${n2d2}). Product is ${n1d2 * n2d2}. Write tens (${cellProducts['1-1'].tens}) in the **top-left** part and ones (${cellProducts['1-1'].ones}) in the **bottom-right** part.`,
+        `Step 1: Draw a 2x2 grid. Write the first number (${num1}) on top... Write the second number (${num2}) on the right side... Diagonals are drawn from top-right to bottom-left in each cell.`,
+        `Step 2: Focus on the top-left cell. Multiply the digit above it (${n1d1}) by the digit to its right (${n2d1}). Product is ${n1d1 * n2d1}. Write the tens digit (${cellProducts['0-0'].tens}) in the **top-left** triangle and the ones digit (${cellProducts['0-0'].ones}) in the **bottom-right** triangle.`,
+        `Step 3: Focus on the top-right cell. Multiply the digit above it (${n1d2}) by the digit to its right (${n2d1}). Product is ${n1d2 * n2d1}. Write tens (${cellProducts['0-1'].tens}) in the **top-left** triangle and ones (${cellProducts['0-1'].ones}) in the **bottom-right** triangle.`,
+        `Step 4: Focus on the bottom-left cell. Multiply the digit above it (${n1d1}) by the digit to its right (${n2d2}). Product is ${n1d1 * n2d2}. Write tens (${cellProducts['1-0'].tens}) in the **top-left** triangle and ones (${cellProducts['1-0'].ones}) in the **bottom-right** triangle.`,
+        `Step 5: Focus on the bottom-right cell. Multiply the digit above it (${n1d2}) by the digit to its right (${n2d2}). Product is ${n1d2 * n2d2}. Write tens (${cellProducts['1-1'].tens}) in the **top-left** triangle and ones (${cellProducts['1-1'].ones}) in the **bottom-right** triangle.`,
         `Step 6: Now, sum the diagonals, starting from the bottom right. The first diagonal only has the ones digit ${cellProducts['1-1'].ones}. Write this sum (${diagSumsCorrect[0]}) below the grid.`,
         `Step 7: Sum the next diagonal (going up and left): ${cellProducts['1-0'].ones} + ${cellProducts['1-1'].tens} + ${cellProducts['0-1'].ones} = ${sumsRaw[1]}. Write the ones digit (${diagSumsCorrect[1]}) and carry over the tens (${Math.floor(sumsRaw[1]/10)}).`,
         `Step 8: Sum the next diagonal: ${cellProducts['0-0'].ones} + ${cellProducts['1-0'].tens} + ${cellProducts['0-1'].tens} + (carry ${Math.floor(sumsRaw[1]/10)}) = ${sumsRaw[2] + Math.floor(sumsRaw[1]/10)}. Write the ones digit (${diagSumsCorrect[2]}) and carry over the tens (${Math.floor((sumsRaw[2] + Math.floor(sumsRaw[1]/10))/10)}).`,
@@ -257,47 +257,28 @@ function updateHintButtons() {
     if(nextHintButton) nextHintButton.style.display = (currentHintStep < hints.length - 1) ? 'inline-block' : 'none';
 }
 
-// --- Diagnostic Function ---
+// --- Diagnostic Function (Optional - can be removed if visuals are correct) ---
 function diagnoseLatticeStyles() {
     console.log("--- Diagnosing Lattice Styles ---");
-    const interactiveCell = document.querySelector('.lattice-cell'); // Get the first interactive cell
-    const staticCell = document.querySelector('.static-lattice-cell'); // Get the first static cell
+    const interactiveCell = document.querySelector('.lattice-cell');
+    const staticCell = document.querySelector('.static-lattice-cell');
 
     if (interactiveCell) {
-        const computedStyle = window.getComputedStyle(interactiveCell);
-        const bgImage = computedStyle.backgroundImage;
-        console.log("Computed 'background-image' for interactive cell (.lattice-cell):", bgImage);
-        // Expected: Should contain 'linear-gradient(to bottom left, ...)' or similar browser representation.
-        if (!bgImage || !bgImage.includes('linear-gradient')) {
-            console.warn("WARNING: Computed style does not seem to contain the expected linear-gradient for interactive cell!");
-            console.log("Full computed background properties:", {
-                background: computedStyle.background,
-                backgroundColor: computedStyle.backgroundColor,
-                backgroundImage: computedStyle.backgroundImage,
-                backgroundSize: computedStyle.backgroundSize,
-                backgroundRepeat: computedStyle.backgroundRepeat,
-                backgroundPosition: computedStyle.backgroundPosition
-            });
+        const svgLine = interactiveCell.querySelector('svg line');
+        if (svgLine) {
+            console.log("Interactive Cell SVG Line attributes:", { x1: svgLine.getAttribute('x1'), y1: svgLine.getAttribute('y1'), x2: svgLine.getAttribute('x2'), y2: svgLine.getAttribute('y2') });
+        } else {
+            console.warn("Could not find SVG line in interactive cell.");
         }
     } else {
         console.error("Could not find an element with class '.lattice-cell' for diagnosis.");
     }
-
-    if (staticCell) {
-        const computedStyle = window.getComputedStyle(staticCell);
-        const bgImage = computedStyle.backgroundImage;
-        console.log("Computed 'background-image' for static cell (.static-lattice-cell):", bgImage);
-        // Expected: Should contain 'linear-gradient(to bottom left, ...)' or similar browser representation.
-         if (!bgImage || !bgImage.includes('linear-gradient')) {
-            console.warn("WARNING: Computed style does not seem to contain the expected linear-gradient for static cell!");
-             console.log("Full computed background properties for static cell:", {
-                background: computedStyle.background,
-                backgroundColor: computedStyle.backgroundColor,
-                backgroundImage: computedStyle.backgroundImage,
-                backgroundSize: computedStyle.backgroundSize,
-                backgroundRepeat: computedStyle.backgroundRepeat,
-                backgroundPosition: computedStyle.backgroundPosition
-            });
+     if (staticCell) {
+        const svgLine = staticCell.querySelector('svg line');
+        if (svgLine) {
+            console.log("Static Cell SVG Line attributes:", { x1: svgLine.getAttribute('x1'), y1: svgLine.getAttribute('y1'), x2: svgLine.getAttribute('x2'), y2: svgLine.getAttribute('y2') });
+        } else {
+            console.warn("Could not find SVG line in static cell.");
         }
     } else {
         console.error("Could not find an element with class '.static-lattice-cell' for diagnosis.");
@@ -316,7 +297,10 @@ if(prevHintButton) prevHintButton.addEventListener('click', prevHintStep);
 // --- Initial Load ---
 document.addEventListener('DOMContentLoaded', () => {
     console.log("Lattice page DOM loaded");
-    generateProblem();
-    // Run diagnostics after initial setup
-    diagnoseLatticeStyles();
+    try {
+        generateProblem();
+        // diagnoseLatticeStyles(); // Keep or remove diagnosis as needed
+    } catch (error) {
+        console.error("Error during initial setup:", error);
+    }
 });

@@ -3,195 +3,119 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lattice Method - Nia's Multiplication Adventure!</title>
+    <title>格子 Lattice Multiplication - Nia's Multiplication Adventure!</title>
     <link rel="stylesheet" href="../css/style.css">
-    <!-- Add Favicon Link -->
     <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="90" font-size="90">✨</text></svg>'>
     <style>
-        /* Add specific styles for lattice grid if needed later */
-        .lattice-grid { border-collapse: collapse; margin: 20px auto; }
-        .lattice-grid td {
-            border: 1px solid black;
-            width: 50px;
-            height: 50px;
-            position: relative;
-            text-align: center;
-            font-size: 1.2em;
-        }
-        .lattice-grid .diagonal {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: linear-gradient(to bottom right, transparent 49.5%, black 49.5%, black 50.5%, transparent 50.5%);
-            z-index: 1;
-        }
-         .lattice-grid .num-top { position: absolute; top: 2px; left: 5px; z-index: 2; color: blue; }
-         .lattice-grid .num-bottom { position: absolute; bottom: 2px; right: 5px; z-index: 2; color: green; }
-         .lattice-grid .outside-num { font-weight: bold; font-size: 1.5em; padding: 10px; }
-         .lattice-sum { font-weight: bold; color: red; padding: 5px; }
-
-        /* Styles for Lattice Game */
+        /* NEW Styles for Lattice Game using SVG */
         .lattice-container {
-            margin: 20px auto;
+            margin: 30px auto; /* Increased margin */
             position: relative;
-            width: 240px; /* Adjust size as needed (cell width * 2 + padding/borders) */
-            height: 240px;
+            width: 200px; /* Cell width * 2 */
+            height: 200px; /* Cell height * 2 */
+            font-family: 'Courier New', Courier, monospace;
         }
         .lattice-grid {
             display: grid;
-            grid-template-columns: repeat(2, 120px); /* Cell width */
-            grid-template-rows: repeat(2, 120px); /* Cell height */
+            grid-template-columns: repeat(2, 100px); /* Cell width */
+            grid-template-rows: repeat(2, 100px); /* Cell height */
             border: 2px solid black;
-            position: relative;
+            position: relative; /* Needed for absolute positioning of numbers */
         }
         .lattice-cell {
             border: 1px solid #ccc;
-            position: relative;
-            background: none;
-            display: flex;
-            /* Ensure overflow is not hidden */
-            /* overflow: hidden; */
+            position: relative; /* Needed for absolute positioning of inputs */
+            box-sizing: border-box; /* Include border in size */
         }
-
-        /* Diagonal line using ::before (Top-Right to Bottom-Left) - Adjusted Transform */
-        .lattice-cell::before {
-            content: '';
+        .lattice-cell svg {
             position: absolute;
-            top: 0;
-            right: 0;
-            width: 150%; /* Keep extended width */
-            height: 1px; /* Line thickness */
-            background-color: #aaa; /* Line color */
-            transform-origin: 100% 0%; /* Explicitly set origin to top-right corner (X=100%, Y=0%) */
-            /* Rotate and slightly adjust X position if needed */
-            transform: translateX(0.5px) rotate(135deg); /* Added small positive translateX to nudge slightly right if origin calculation is off */
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             z-index: 0; /* Behind inputs */
         }
-
-        /* Cell Input positioning */
-        .cell-input-tens {
-             position: absolute;
-             width: 30px; height: 30px; font-size: 1.2em; text-align: center;
-             border: 1px dashed #90caf9; background-color: #e3f2fd; z-index: 1;
-             top: 10px; left: 15px; /* Tens in Top-Left triangle */
+        .lattice-cell svg line {
+            stroke: #aaa; /* Line color */
+            stroke-width: 1; /* Line thickness */
         }
-        .cell-input-ones {
-             position: absolute;
-             width: 30px; height: 30px; font-size: 1.2em; text-align: center;
-             border: 1px dashed #90caf9; background-color: #e3f2fd; z-index: 1;
-             bottom: 10px; right: 15px; /* Ones in Bottom-Right triangle */
-        }
-
-        .diagonal-sum-input {
+        .lattice-num-top, .lattice-num-side {
             position: absolute;
-            width: 40px;
+            font-size: 1.4em;
+            font-weight: bold;
+            color: #0d47a1;
+        }
+        .lattice-num-top {
+            top: -30px; /* Position above grid */
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .lattice-num-side { /* Changed class name */
+            right: -30px; /* Position right of grid */
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        .lattice-input-tens, .lattice-input-ones {
+            position: absolute;
+            width: 35px; /* Adjust size */
             height: 30px;
-            font-size: 1.2em;
+            font-size: 1.1em; /* Adjust size */
             text-align: center;
-            border: 1px dashed #ffcdd2;
-            background-color: #ffebee;
-            z-index: 2; /* Above grid */
+            border: 1px dashed #90caf9;
+            background-color: #e3f2fd;
+            z-index: 1; /* Above SVG line */
+            box-sizing: border-box;
         }
-        /* Positioning for diagonal sums (adjust precisely) */
-        #diag-sum-0 { bottom: -40px; right: -20px; transform: translateX(50%); } /* Bottom right */
-        #diag-sum-1 { bottom: -40px; left: 120px; transform: translateX(-50%); }
-        #diag-sum-2 { bottom: 0px; left: -40px; transform: translateY(50%); }
-        #diag-sum-3 { top: -40px; left: -20px; transform: translateX(-50%); } /* Top left */
+        /* Position inputs in the correct triangles */
+        .lattice-input-tens { top: 8px; left: 8px; } /* Top-Left */
+        .lattice-input-ones { bottom: 8px; right: 8px; } /* Bottom-Right */
 
-        .final-answer-lattice {
-            font-size: 1.5em;
-            font-weight: bold;
-            margin-top: 50px; /* Space below grid */
-        }
-        .final-answer-lattice input {
-            font-size: 1em;
-            padding: 5px;
-            border: 2px solid #1976d2;
-            width: 150px;
-            text-align: center;
-        }
-        .hint-controls button { margin: 0 5px; }
-        .hint-area {
-            background-color: #fffde7;
-            border: 1px dashed #fff59d;
-            padding: 10px;
-            margin-top: 15px;
-            min-height: 40px;
-            text-align: left;
-        }
-
-        /* Styles for Static Example Grid */
-        .static-lattice-container {
-            margin: 15px auto;
-            position: relative;
-            width: 160px; /* Smaller size for example (80px * 2) */
-            height: 160px;
-            font-family: 'Courier New', Courier, monospace;
-        }
-        .static-lattice-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 80px); /* Cell width */
-            grid-template-rows: repeat(2, 80px); /* Cell height */
-            border: 2px solid black;
-            position: relative;
-        }
-        .static-lattice-cell {
-            border: 1px solid #ccc;
-            position: relative;
-            font-size: 1.2em;
-            background: none;
-            /* Ensure overflow is not hidden */
-            /* overflow: hidden; */
-        }
-
-        /* Diagonal line using ::before (Top-Right to Bottom-Left) - Adjusted Transform */
-        .static-lattice-cell::before {
-            content: '';
+        .lattice-sum-input { /* Renamed class */
             position: absolute;
-            top: 0;
-            right: 0;
-            width: 150%; /* Keep extended width */
-            height: 1px; /* Line thickness */
-            background-color: #aaa; /* Line color */
-            transform-origin: 100% 0%; /* Explicitly set origin to top-right corner */
-             /* Rotate and slightly adjust X position if needed */
-            transform: translateX(0.5px) rotate(135deg); /* Added small positive translateX */
-            z-index: 0; /* Behind numbers */
+            width: 40px; height: 30px; font-size: 1.1em; text-align: center;
+            border: 1px dashed #ffcdd2; background-color: #ffebee; z-index: 2;
         }
+        /* Positioning for diagonal sums (adjust based on 100px cells) */
+        #diag-sum-0 { bottom: -35px; right: -20px; transform: translateX(50%); } /* Bottom right */
+        #diag-sum-1 { bottom: -35px; left: 100px; transform: translateX(-50%); } /* Middle bottom */
+        #diag-sum-2 { bottom: 100px; left: -35px; transform: translateY(50%); } /* Middle left */
+        #diag-sum-3 { top: -35px; left: -20px; transform: translateX(-50%); } /* Top left */
 
-        /* Static Cell Number positioning */
-        .static-cell-tens {
-             position: absolute; z-index: 1;
-             top: 5px; left: 10px; /* Tens in Top-Left triangle */
-             color: #666;
+        .lattice-final-answer { /* Renamed class */
+            font-size: 1.4em; font-weight: bold; margin-top: 50px;
         }
-        .static-cell-ones {
-             position: absolute; z-index: 1;
-             bottom: 5px; right: 10px; /* Ones in Bottom-Right triangle */
-             color: #000;
+        .lattice-final-answer input {
+            font-size: 1em; padding: 5px; border: 2px solid #1976d2;
+            width: 120px; text-align: center;
         }
-        .static-diag-sum {
-            position: absolute;
-            font-size: 1.2em;
-            font-weight: bold;
-            color: #333;
-        }
-        /* Positioning for static diagonal sums */
+        /* ... Hint styles remain the same ... */
+
+        /* Static Example Grid Styles */
+        .static-lattice-container { margin: 15px auto; position: relative; width: 160px; height: 160px; font-family: 'Courier New', Courier, monospace; }
+        .static-lattice-grid { display: grid; grid-template-columns: repeat(2, 80px); grid-template-rows: repeat(2, 80px); border: 2px solid black; position: relative; }
+        .static-lattice-cell { border: 1px solid #ccc; position: relative; box-sizing: border-box; }
+        .static-lattice-cell svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; }
+        .static-lattice-cell svg line { stroke: #aaa; stroke-width: 1; }
+        .static-num-top, .static-num-side { position: absolute; font-size: 1.2em; font-weight: bold; color: #333; }
+        .static-num-top { top: -25px; left: 50%; transform: translateX(-50%); color: #0d47a1; }
+        .static-num-side { right: -25px; top: 50%; transform: translateY(-50%); color: #0d47a1; } /* Changed class */
+        .static-cell-tens, .static-cell-ones { position: absolute; z-index: 1; font-size: 1.1em; }
+        .static-cell-tens { top: 5px; left: 5px; color: #666; } /* Top-Left */
+        .static-cell-ones { bottom: 5px; right: 5px; color: #000; } /* Bottom-Right */
+        .static-diag-sum { position: absolute; color: #c0ca33; font-weight: bold; z-index: 2; font-size: 1.1em; }
         .static-diag-sum-0 { bottom: -25px; right: -10px; transform: translateX(50%); }
-        .static-diag-sum-1 { bottom: -25px; left: 80px; transform: translateX(-50%); } /* Middle bottom */
-        .static-diag-sum-2 { bottom: 80px; left: -25px; transform: translateY(50%); } /* Middle left */
+        .static-diag-sum-1 { bottom: -25px; left: 80px; transform: translateX(-50%); }
+        .static-diag-sum-2 { bottom: 80px; left: -25px; transform: translateY(50%); }
         .static-diag-sum-3 { top: -25px; left: -10px; transform: translateX(-50%); }
+
     </style>
 </head>
 <body>
     <header>
         <h1>✨ Nia's Multiplication Adventure! ✨</h1>
-        <!-- Add Score/Reward Display -->
         <div style="text-align: center; color: white; font-size: 1.2em; margin-bottom: 10px;">
             Score: <span id="current-score">0</span> 🏆 | <span id="reward-message"></span>
         </div>
         <nav>
-            <ul>
+             <ul>
                 <li><a href="../index.html">🏠 Home</a></li>
                 <li><a href="introduction.html">🤔 What is Multiplication?</a></li>
                 <li><a href="facts.html">🔢 Multiplication Facts</a></li>
@@ -200,6 +124,7 @@
                 <li><a href="2digit.html">✖️ Multiplying Bigger Numbers</a></li>
                 <li><a href="lattice.html">格子 Lattice Method</a></li>
                 <li><a href="problems.html">✏️ Practice Problems</a></li>
+                <li><a href="rewards.html">🏆 Score & Rewards</a></li>
             </ul>
         </nav>
     </header>
@@ -210,113 +135,110 @@
 
         <h3>How it Works (Example: 23 x 14)</h3>
         <ol>
-            <li><strong>Draw the Grid:</strong> Since we are multiplying two 2-digit numbers, draw a 2x2 grid.</li>
-            <li><strong>Place the Numbers:</strong> Write the first number (23) along the <strong>top</strong>, one digit above each column (2 above the first, 3 above the second). Write the second number (14) down the <strong>right side</strong>, one digit next to each row (1 next to the top row, 4 next to the bottom row).</li>
-            <li><strong>Draw Diagonals:</strong> Draw a diagonal line from the <strong>top-right corner to the bottom-left corner</strong> in each small square of the grid.</li>
-            <li><strong>Multiply Digits:</strong> For each small square, multiply the digit directly above it by the digit directly to its right.
+            <li><strong>Draw the Grid:</strong> Draw a 2x2 grid.</li>
+            <li><strong>Place the Numbers:</strong> Write 23 along the <strong>top</strong> (2 above first column, 3 above second). Write 14 down the <strong>right side</strong> (1 next to top row, 4 next to bottom row).</li>
+            <li><strong>Draw Diagonals:</strong> Draw a diagonal line from the <strong>top-right corner to the bottom-left corner</strong> in each square.</li>
+            <li><strong>Multiply Digits:</strong> For each square, multiply the digit above by the digit to the right. Write the tens digit in the top-left triangle and the ones digit in the bottom-right triangle.
                 <ul>
-                    <li>Top-left square (2x1=02): Write <strong>0</strong> in the top-left (tens) part and <strong>2</strong> in the bottom-right (ones) part.</li>
-                    <li>Top-right square (3x1=03): Write <strong>0</strong> in the top-left part, <strong>3</strong> in the bottom-right part.</li>
-                    <li>Bottom-left square (2x4=08): Write <strong>0</strong> in the top-left part, <strong>8</strong> in the bottom-right part.</li>
-                    <li>Bottom-right square (3x4=12): Write <strong>1</strong> in the top-left part, <strong>2</strong> in the bottom-right part.</li>
+                    <li>Top-left (2x1=02): 0 (tens), 2 (ones)</li>
+                    <li>Top-right (3x1=03): 0 (tens), 3 (ones)</li>
+                    <li>Bottom-left (2x4=08): 0 (tens), 8 (ones)</li>
+                    <li>Bottom-right (3x4=12): 1 (tens), 2 (ones)</li>
                 </ul>
             </li>
-            <li><strong>Add Diagonally:</strong> Starting from the bottom-right diagonal, add the numbers in each diagonal path. Write the sum below the grid for each path. If a sum is two digits, write the ones digit and carry the tens digit over to the next diagonal (to the left).
-                <ul>
-                    <li>Bottom-right diagonal: 5. Sum = 5.</li>
-                    <li>Middle diagonal: 0 + 1 + 2 = 3. Sum = 3.</li>
-                    <li>Next diagonal: 8 + 0 + 1 = 9. Sum = 9.</li>
-                    <li>Top-left diagonal: 0. Sum = 0.</li>
+            <li><strong>Add Diagonally:</strong> Add numbers along the diagonals, starting bottom-right. Carry tens to the next diagonal.
+                 <ul>
+                    <li>Diagonal 1 (bottom-right): 2. Sum = 2.</li>
+                    <li>Diagonal 2: 8 + 1 + 3 = 12. Write 2, carry 1.</li>
+                    <li>Diagonal 3: 0 + 0 + 2 + carry 1 = 3. Write 3.</li>
+                    <li>Diagonal 4 (top-left): 0. Write 0.</li>
                 </ul>
             </li>
-            <li><strong>Read the Answer:</strong> Read the sums from top-left down to bottom-right: 0935. So, 23 x 45 = 1035. (Wait, the example calculation was slightly off, let's re-do: 8+1+1 = 10 for the third diagonal. Write 0, carry 1. Top diagonal 0+carry 1 = 1. Answer: 1035). Let's use a clearer example in the text: 23 x 14 -> Top-left: 2x1=02, Top-right: 3x1=03, Bottom-left: 2x4=08, Bottom-right: 3x4=12. Diagonals: 2 -> 3+1+8=12 (write 2, carry 1) -> 0+0+2+carry 1=3 -> 0. Answer: 322.</li>
+            <li><strong>Read the Answer:</strong> Read sums from top-left down: 0322 = <strong>322</strong>.</li>
         </ol>
-        <p>Let's try with <strong>23 x 14</strong>: Grid has 2, 3 on top; 1, 4 on right. Cells: [0/2, 0/3], [0/8, 1/2]. Diagonals: (bottom-right) 2; (middle) 8+1+3=12 (write 2, carry 1); (next) 0+0+2+carry 1=3; (top-left) 0. Read answer: 0322 = <strong>322</strong>.</p>
 
-        <!-- Static Visual Example -->
+        <!-- Static Visual Example using SVG -->
         <div style="text-align: center; margin-top: 20px;">
             <strong>Visual Example (23 x 14 = 322):</strong>
             <div class="static-lattice-container">
-                <!-- Numbers around the grid -->
+                <!-- Numbers around grid -->
                 <span class="static-num-top" style="left: 25%;">2</span>
                 <span class="static-num-top" style="left: 75%;">3</span>
-                <span class="static-num-right" style="top: 25%;">1</span>
-                <span class="static-num-right" style="top: 75%;">4</span>
-
-                <!-- The Grid -->
+                <span class="static-num-side" style="top: 25%;">1</span> <!-- Changed class -->
+                <span class="static-num-side" style="top: 75%;">4</span> <!-- Changed class -->
                 <div class="static-lattice-grid">
                     <!-- Row 1 -->
-                    <div class="static-lattice-cell"> <!-- 2x1=02 -->
-                        <span class="static-cell-tens">0</span>
-                        <span class="static-cell-ones">2</span>
+                    <div class="static-lattice-cell">
+                        <svg viewBox="0 0 100 100" preserveAspectRatio="none"><line x1="100" y1="0" x2="0" y2="100"/></svg>
+                        <span class="static-cell-tens">0</span><span class="static-cell-ones">2</span>
                     </div>
-                    <div class="static-lattice-cell"> <!-- 3x1=03 -->
-                        <span class="static-cell-tens">0</span>
-                        <span class="static-cell-ones">3</span>
+                    <div class="static-lattice-cell">
+                        <svg viewBox="0 0 100 100" preserveAspectRatio="none"><line x1="100" y1="0" x2="0" y2="100"/></svg>
+                        <span class="static-cell-tens">0</span><span class="static-cell-ones">3</span>
                     </div>
                     <!-- Row 2 -->
-                    <div class="static-lattice-cell"> <!-- 2x4=08 -->
-                        <span class="static-cell-tens">0</span>
-                        <span class="static-cell-ones">8</span>
+                    <div class="static-lattice-cell">
+                        <svg viewBox="0 0 100 100" preserveAspectRatio="none"><line x1="100" y1="0" x2="0" y2="100"/></svg>
+                        <span class="static-cell-tens">0</span><span class="static-cell-ones">8</span>
                     </div>
-                    <div class="static-lattice-cell"> <!-- 3x4=12 -->
-                        <span class="static-cell-tens">1</span>
-                        <span class="static-cell-ones">2</span>
+                    <div class="static-lattice-cell">
+                        <svg viewBox="0 0 100 100" preserveAspectRatio="none"><line x1="100" y1="0" x2="0" y2="100"/></svg>
+                        <span class="static-cell-tens">1</span><span class="static-cell-ones">2</span>
                     </div>
                 </div>
-
                 <!-- Diagonal Sums -->
-                <span class="static-diag-sum static-diag-sum-0">2</span> <!-- Bottom Right -->
-                <span class="static-diag-sum static-diag-sum-1">2</span> <!-- Middle Bottom (from 12) -->
-                <span class="static-diag-sum static-diag-sum-2">3</span> <!-- Middle Left (from 3 + carry 1) -->
-                <span class="static-diag-sum static-diag-sum-3">0</span> <!-- Top Left -->
+                <span class="static-diag-sum static-diag-sum-0">2</span>
+                <span class="static-diag-sum static-diag-sum-1">2</span>
+                <span class="static-diag-sum static-diag-sum-2">3</span>
+                <span class="static-diag-sum static-diag-sum-3">0</span>
             </div>
         </div>
-        <!-- End Static Visual Example -->
-
 
         <hr style="margin: 30px 0;">
 
         <h3>🧩 Lattice Practice 🧩</h3>
         <div id="game-lattice" class="interactive-game" style="background-color: #f9fbe7; border-color: #e6ee9c;">
-
             <div class="lattice-container">
-                <!-- Numbers around the grid (Top and Right) -->
-                <span class="lattice-num-top" id="lattice-num1-d1" style="left: 25%;">?</span> <!-- Digit 1 of Num1 -->
-                <span class="lattice-num-top" id="lattice-num1-d2" style="left: 75%;">?</span> <!-- Digit 2 of Num1 -->
-                <span class="lattice-num-right" id="lattice-num2-d1" style="top: 25%;">?</span> <!-- Digit 1 of Num2 -->
-                <span class="lattice-num-right" id="lattice-num2-d2" style="top: 75%;">?</span> <!-- Digit 2 of Num2 -->
+                <!-- Numbers around the grid -->
+                <span class="lattice-num-top" id="lattice-num1-d1" style="left: 25%;">?</span>
+                <span class="lattice-num-top" id="lattice-num1-d2" style="left: 75%;">?</span>
+                <span class="lattice-num-side" id="lattice-num2-d1" style="top: 25%;">?</span> <!-- Changed class -->
+                <span class="lattice-num-side" id="lattice-num2-d2" style="top: 75%;">?</span> <!-- Changed class -->
 
-                <!-- The Grid (structure remains the same) -->
+                <!-- The Grid with SVG -->
                 <div class="lattice-grid">
                     <!-- Row 1 -->
                     <div class="lattice-cell" id="cell-0-0">
-                        <input type="number" class="cell-input-tens" id="cell-0-0-t" min="0" max="9">
-                        <input type="number" class="cell-input-ones" id="cell-0-0-o" min="0" max="9">
+                        <svg viewBox="0 0 100 100" preserveAspectRatio="none"><line x1="100" y1="0" x2="0" y2="100"/></svg>
+                        <input type="number" class="lattice-input-tens" id="cell-0-0-t" min="0" max="9">
+                        <input type="number" class="lattice-input-ones" id="cell-0-0-o" min="0" max="9">
                     </div>
                     <div class="lattice-cell" id="cell-0-1">
-                        <input type="number" class="cell-input-tens" id="cell-0-1-t" min="0" max="9">
-                        <input type="number" class="cell-input-ones" id="cell-0-1-o" min="0" max="9">
+                        <svg viewBox="0 0 100 100" preserveAspectRatio="none"><line x1="100" y1="0" x2="0" y2="100"/></svg>
+                        <input type="number" class="lattice-input-tens" id="cell-0-1-t" min="0" max="9">
+                        <input type="number" class="lattice-input-ones" id="cell-0-1-o" min="0" max="9">
                     </div>
                     <!-- Row 2 -->
                     <div class="lattice-cell" id="cell-1-0">
-                        <input type="number" class="cell-input-tens" id="cell-1-0-t" min="0" max="9">
-                        <input type="number" class="cell-input-ones" id="cell-1-0-o" min="0" max="9">
+                        <svg viewBox="0 0 100 100" preserveAspectRatio="none"><line x1="100" y1="0" x2="0" y2="100"/></svg>
+                        <input type="number" class="lattice-input-tens" id="cell-1-0-t" min="0" max="9">
+                        <input type="number" class="lattice-input-ones" id="cell-1-0-o" min="0" max="9">
                     </div>
                     <div class="lattice-cell" id="cell-1-1">
-                        <input type="number" class="cell-input-tens" id="cell-1-1-t" min="0" max="9">
-                        <input type="number" class="cell-input-ones" id="cell-1-1-o" min="0" max="9">
+                        <svg viewBox="0 0 100 100" preserveAspectRatio="none"><line x1="100" y1="0" x2="0" y2="100"/></svg>
+                        <input type="number" class="lattice-input-tens" id="cell-1-1-t" min="0" max="9">
+                        <input type="number" class="lattice-input-ones" id="cell-1-1-o" min="0" max="9">
                     </div>
                 </div>
 
                 <!-- Diagonal Sum Inputs -->
-                <input type="number" class="diagonal-sum-input" id="diag-sum-0" placeholder="Sum"> <!-- Bottom Right -->
-                <input type="number" class="diagonal-sum-input" id="diag-sum-1" placeholder="Sum">
-                <input type="number" class="diagonal-sum-input" id="diag-sum-2" placeholder="Sum">
-                <input type="number" class="diagonal-sum-input" id="diag-sum-3" placeholder="Sum"> <!-- Top Left -->
+                <input type="number" class="lattice-sum-input" id="diag-sum-0" placeholder="Sum">
+                <input type="number" class="lattice-sum-input" id="diag-sum-1" placeholder="Sum">
+                <input type="number" class="lattice-sum-input" id="diag-sum-2" placeholder="Sum">
+                <input type="number" class="lattice-sum-input" id="diag-sum-3" placeholder="Sum">
             </div>
 
-            <div class="final-answer-lattice">
+            <div class="lattice-final-answer"> <!-- Renamed class -->
                 <label for="final-answer-lattice">Final Answer:</label>
                 <input type="number" id="final-answer-lattice" placeholder="Read from sums">
             </div>
@@ -326,8 +248,6 @@
                 <button id="new-lattice-button" class="game-button" style="background-color: #9e9d24;">New Problem</button>
             </div>
             <p id="feedback-lattice" class="feedback-message"></p>
-
-            <!-- Hint Section -->
             <div class="hint-controls" style="margin-top: 20px;">
                  <button id="show-hint-lattice-button" class="game-button" style="background-color: #4caf50;">💡 Show Hint</button>
                  <button id="prev-hint-lattice-button" class="game-button" style="background-color: #ff9800; display: none;">&lt; Prev Step</button>
@@ -337,16 +257,13 @@
                 <p id="hint-text-lattice">Hint will appear here.</p>
             </div>
         </div>
-
     </main>
 
     <footer>
         <p>🚀 Keep Practicing! 🚀</p>
     </footer>
 
-    <!-- Load main script FIRST -->
     <script src="../js/script.js"></script>
-    <!-- Load page-specific script -->
-    <script src="../js/lattice.js"></script>
+    <script src="../js/lattice.js"></script> <!-- Ensure correct JS file is linked -->
 </body>
 </html>

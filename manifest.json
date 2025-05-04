@@ -1,0 +1,22 @@
+{
+  "name": "Nia's Multiplication Adventure!",
+  "short_name": "Nia Math",
+  "description": "An interactive learning module for Class 4 multiplication concepts.",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#4a148c",
+  "theme_color": "#6a1b9a",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "images/icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "images/icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ]
+}

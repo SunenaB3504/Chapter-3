@@ -8,12 +8,28 @@ const scoreDisplay = document.getElementById('current-score');
 const rewardMessageDisplay = document.getElementById('reward-message');
 let scormInitialized = false; // Flag to track SCORM initialization
 
+// --- Service Worker Registration ---
+function registerServiceWorker() {
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js')
+        .then(registration => {
+            console.log('Service Worker registered successfully with scope:', registration.scope);
+        })
+        .catch(error => {
+            console.error('Service Worker registration failed:', error);
+        });
+    } else {
+        console.log('Service Worker is not supported by this browser.');
+    }
+}
+
 // --- SCORM Integration Functions ---
 
 // Initialize SCORM connection
 function initializeScorm() {
     console.log("Attempting SCORM Initialization...");
-    if (scorm_Initialize() === "true") {
+    // Check if online first? navigator.onLine might be useful
+    if (typeof scorm_Initialize !== 'undefined' && scorm_Initialize() === "true") { // Check if function exists
         scormInitialized = true;
         console.log("SCORM Initialized Successfully.");
 
@@ -48,11 +64,17 @@ function initializeScorm() {
         updateScoreDisplay(); // Update display with loaded score
         scorm_Commit(); // Commit after initial load/status set
     } else {
-        console.warn("SCORM Initialization Failed. Running in standalone mode.");
-        // Load score from localStorage as a fallback?
+        // SCORM failed or offline
+        console.warn("SCORM Initialization Failed or Offline. Running in standalone mode.");
+        scormInitialized = false; // Ensure flag is false
+        // Load score from localStorage as a fallback
         const savedScore = localStorage.getItem('niaAdventureScore');
         if (savedScore !== null) {
             currentScore = parseInt(savedScore, 10);
+            console.log("Score restored from localStorage:", currentScore);
+        } else {
+            currentScore = 0;
+            console.log("No score found in localStorage. Starting fresh.");
         }
         updateScoreDisplay();
     }
@@ -60,11 +82,13 @@ function initializeScorm() {
 
 // Save score and suspend data to SCORM
 function saveScormData() {
+    // Always save to localStorage for offline persistence
+    localStorage.setItem('niaAdventureScore', currentScore.toString());
+    console.log("Score saved to localStorage:", currentScore);
+
     if (!scormInitialized) {
-        // Save to localStorage as a fallback?
-        localStorage.setItem('niaAdventureScore', currentScore);
-        console.log("Standalone mode: Score saved to localStorage.");
-        return;
+        // console.log("Standalone mode: Score saved to localStorage.");
+        return; // Don't attempt SCORM calls if not initialized
     }
 
     console.log("Saving SCORM Data...");
@@ -102,6 +126,7 @@ function saveScormData() {
 
 // Terminate SCORM connection
 function terminateScorm() {
+    // Data is already saved to localStorage in saveScormData
     if (!scormInitialized) return;
     console.log("Terminating SCORM Connection...");
     // Set exit mode to suspend so data is saved for next time
@@ -164,10 +189,11 @@ function initializeScore() {
 
 // --- Event Listeners ---
 
-// Initialize score when the DOM is loaded
+// Initialize score and register SW when the DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     console.log("DOMContentLoaded event fired for script.js");
-    initializeScore();
+    initializeScore(); // Initializes score (loads from SCORM or localStorage)
+    registerServiceWorker(); // Register the service worker
 });
 
 // Terminate SCORM when the window is closed/unloaded
